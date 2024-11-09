@@ -15,6 +15,15 @@ if (empty($_SESSION['csrf_token'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFX to PEM Converter | Convert SSL/TLS Certificates Easily</title>
 
+    <meta name="theme-color" content="white" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#007bff" />
+    <meta name="apple-mobile-web-app-title" content="PFX to PEM Converter" />
+    <meta name="msapplication-TitleImage" content="/images/ios/144.png" />
+    <meta name="msapplication-TitleColor" content="#007bff" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/images/ios/512.png">
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="Easily convert PFX files to PEM format for server compatibility. Secure and user-friendly PFX to PEM conversion tool with privacy protection.">
     <meta name="keywords" content="PFX to PEM, PFX converter, PEM converter, SSL conversion, SSL certificate tool, PKCS#12 to PEM">
@@ -39,6 +48,8 @@ if (empty($_SESSION['csrf_token'])) {
 
     <!-- Tailwind CSS -->
     <link href="/css/app.css" rel="stylesheet">
+
+    <link rel="manifest" href="manifest.json" />
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-800 dark:text-white">
@@ -131,7 +142,14 @@ if (empty($_SESSION['csrf_token'])) {
         <p>&copy; <?= date("Y") ?> PFX to PEM Converter. All rights reserved.</p>
     </div>
 </footer>
-
+<script>
+    window.onload = () => {
+        'use strict';
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    }
+</script>
 </body>
 </html>
 
