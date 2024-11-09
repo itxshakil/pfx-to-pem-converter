@@ -13,9 +13,30 @@ if (empty($_SESSION['csrf_token'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFX to PEM Converter</title>
+    <title>PFX to PEM Converter | Convert SSL/TLS Certificates Easily</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Easily convert PFX files to PEM format for server compatibility. Secure and user-friendly PFX to PEM conversion tool with privacy protection.">
+    <meta name="keywords" content="PFX to PEM, PFX converter, PEM converter, SSL conversion, SSL certificate tool, PKCS#12 to PEM">
+    <meta name="author" content="Shakil Alam">
+
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="PFX to PEM Converter | Secure & Quick Certificate Conversion">
+    <meta property="og:description" content="Convert PFX to PEM quickly with our secure, privacy-focused converter. Perfect for SSL/TLS certificate management!">
+    <meta property="og:image" content="https://ui-avatars.com/api/?name=PFX+to+PEM&background=007bff&color=ffffff&size=512">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card Data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PFX to PEM Converter | Secure & Quick Certificate Conversion">
+    <meta name="twitter:description" content="Easily convert PFX files to PEM format for server compatibility and SSL management. Privacy-focused and user-friendly.">
+    <meta name="twitter:image" content="https://ui-avatars.com/api/?name=PFX+to+PEM&background=007bff&color=ffffff&size=512">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-800 dark:text-white">
 
 <header class="bg-blue-600 text-white py-4">
