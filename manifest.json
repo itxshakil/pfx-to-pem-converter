@@ -563,6 +563,50 @@
             "sizes": "1024x1024"
         }
     ],
+    "screenshots": [
+        {
+            "src": "/images/screenshots/HOME_PAGE.png",
+            "sizes": "750x1334",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label" : "Home page"
+        },
+        {
+            "src": "/images/screenshots/HOW_WORKS.png",
+            "sizes": "750x1334",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label" : "How works page"
+        },
+        {
+            "src": "/images/screenshots/FAQ.png",
+            "sizes": "750x1334",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label" : "FAQ page"
+        },
+        {
+            "src": "/images/screenshots/HOME_PAGE_WIDE.png",
+            "sizes": "1536x942",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label" : "Home Page Wide"
+        },
+        {
+            "src": "/images/screenshots/HOW_WORKS_WIDE.png",
+            "sizes": "1536x942",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label" : "How Works Wide"
+        },
+        {
+            "src": "/images/screenshots/FAQ_WIDE.png",
+            "sizes": "1536x942",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label" : "FAQ Wide"
+        }
+    ],
     "lang": "en-US",
     "start_url": "/index.php?utm_source=homescreen",
     "display": "standalone",
