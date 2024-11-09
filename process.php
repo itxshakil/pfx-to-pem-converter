@@ -64,10 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unlink($zipFilePath);
             exit;
         } else {
-            redirectWithError("Failed to create zip file.");
+            unlink($pfxFilePath);
+            unlink($privateKeyFile);
+            unlink($certFile);
+            redirectWithError("Error creating ZIP archive. Please try again later.");
         }
     } else {
         unlink($pfxFilePath);
+        unlink($privateKeyFile);
+        unlink($certFile);
         redirectWithError("Failed to extract private key and certificate. Incorrect password.");
     }
 } else {
