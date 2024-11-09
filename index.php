@@ -38,7 +38,7 @@ if (empty($_SESSION['csrf_token'])) {
     <link rel="canonical" href="https://pfx-to-pem-converter.shakiltech.com">
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/css/app.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-800 dark:text-white">
