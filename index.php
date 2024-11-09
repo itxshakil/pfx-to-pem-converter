@@ -24,6 +24,7 @@ if (empty($_SESSION['csrf_token'])) {
     <meta property="og:title" content="PFX to PEM Converter | Secure & Quick Certificate Conversion">
     <meta property="og:description" content="Convert PFX to PEM quickly with our secure, privacy-focused converter. Perfect for SSL/TLS certificate management!">
     <meta property="og:image" content="https://ui-avatars.com/api/?name=PFX+to+PEM&background=007bff&color=ffffff&size=512">
+    <meta property="og:url" content="https://pfx-to-pem-converter.shakiltech.com">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_US">
 
@@ -32,6 +33,9 @@ if (empty($_SESSION['csrf_token'])) {
     <meta name="twitter:title" content="PFX to PEM Converter | Secure & Quick Certificate Conversion">
     <meta name="twitter:description" content="Easily convert PFX files to PEM format for server compatibility and SSL management. Privacy-focused and user-friendly.">
     <meta name="twitter:image" content="https://ui-avatars.com/api/?name=PFX+to+PEM&background=007bff&color=ffffff&size=512">
+
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://pfx-to-pem-converter.shakiltech.com">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
