@@ -50,6 +50,15 @@ if (empty($_SESSION['csrf_token'])) {
     <link href="/css/app.css" rel="stylesheet">
 
     <link rel="manifest" href="manifest.json" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-08FR6JHTZX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-08FR6JHTZX');
+    </script>
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-800 dark:text-white">
