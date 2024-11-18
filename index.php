@@ -147,7 +147,7 @@ if (empty($_SESSION['csrf_token'])) {
 <!-- Footer -->
 <footer class="bg-gray-800 dark:bg-gray-900 text-white py-4 mt-8">
     <div class="container mx-auto px-4 text-center">
-        <p class="mb-2">Developed with ❤️ by Shakil Alam</p>
+        <p class="mb-2">Developed with ❤️ by <a href="https://shakiltech.com?utm_source=pfx2pem">Shakil Alam</a></p>
         <p>&copy; <?= date("Y") ?> PFX to PEM Converter. All rights reserved.</p>
     </div>
 </footer>
