@@ -1,6 +1,6 @@
 const DEBUG = true;
 
-const APP_CACHE = 'v-0.2.0';
+const APP_CACHE = 'v-0.2.1';
 const STATIC_ASSETS = [
     '/css/app.css',
     '/manifest.json',
