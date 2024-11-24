@@ -49,47 +49,30 @@ if (empty($_SESSION['csrf_token'])) {
     <!-- Schema.org Structured Data Markup -->
     <script type="application/ld+json">
         {
-            "@context": "https://schema.org",
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "PFX to PEM Converter",
+          "description": "A tool to extract private key and certificate from .pfx file and convert it into PEM format for SSL/TLS management.",
+          "url": "https://pfx-to-pem-converter.shakiltech.com",
+          "applicationCategory": "Utilities",
+          "operatingSystem": "Web",
+          "softwareVersion": "1.0",
+          "author": {
+            "@type": "Organization",
+            "name": "Shakil Alam"
+          },
+          "license": "https://pfx-to-pem-converter.shakiltech.com/terms",
+          "mainEntityOfPage": {
             "@type": "WebPage",
-            "name": "PFX to PEM Converter",
-            "description": "A tool to extract private key and certificate from .pfx file and convert it into PEM format for SSL/TLS management.",
-            "url": "https://pfx-to-pem-converter.shakiltech.com",
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://pfx-to-pem-converter.shakiltech.com"
-            },
-            "breadcrumb": {
-                "@type": "BreadcrumbList",
-                "itemListElement": [
-                    {
-                        "@type": "ListItem",
-                        "position": 1,
-                        "name": "Home",
-                        "item": "https://pfx-to-pem-converter.shakiltech.com"
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 2,
-                        "name": "How It Works",
-                        "item": "https://pfx-to-pem-converter.shakiltech.com#how-it-works"
-                    }
-                ]
-            },
-            "itemReviewed": {
-                "@type": "Service",
-                "name": "PFX to PEM Conversion",
-                "serviceType": "File Conversion",
-                "provider": {
-                    "@type": "Organization",
-                    "name": "Shakil Alam"
-                }
-            },
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.5",
-                "reviewCount": "100"
-            }
+            "@id": "https://pfx-to-pem-converter.shakiltech.com"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.5",
+            "reviewCount": "87"
+          }
         }
+
     </script>
 
     <!-- Tailwind CSS -->
