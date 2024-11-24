@@ -85,7 +85,7 @@ if (empty($_SESSION['csrf_token'])) {
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
+
       gtag('config', 'G-08FR6JHTZX');
     </script>
 </head>
@@ -102,7 +102,7 @@ if (empty($_SESSION['csrf_token'])) {
     </div>
 </header>
 
-<div class="container max-w-7xl mx-auto mt-6">
+<main class="container max-w-7xl mx-auto mt-6">
     <section class="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 dark:text-white rounded-lg shadow-md">
         <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Extract Private Key and Certificate from Your .pfx File</h2>
         <p class="text-gray-600 dark:text-gray-300 mb-6">
@@ -171,7 +171,33 @@ if (empty($_SESSION['csrf_token'])) {
             </div>
         </div>
     </section>
-</div>
+    <section class="mt-4">
+        <h4 class="text-xl underline p-4 font-bold">Related Articles</h4>
+        <div class="flex flex-col md:flex-row gap-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+            <div class="w-full h-auto bg-gray-100 dark:bg-gray-900 lg:w-1/2 bg-cover rounded-lg shadow-lg p-6 m-2">
+                <h3 class="font-semibold text-lg text-gray-900 dark:text-white">
+                    <a href="/blogs/extract-ssl-certificate-from-pfx/" class="hover:text-blue-500 dark:hover:text-blue-400">
+                    How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease
+                    </a>
+                </h3>
+                <p class="text-xl mb-2 text-gray-800 dark:text-gray-300">
+                Learn how to extract SSL certificates from a PFX file using OpenSSL. A step-by-step guide to converting your SSL certificates quickly and securely.
+                    <a href="/blogs/extract-ssl-certificate-from-pfx/" class="text-blue-600 dark:text-blue-400 hover:underline">read more...</a>
+                </p>
+            </div>
+
+            <div class="w-full h-auto bg-gray-100 dark:bg-gray-900 lg:w-1/2 bg-cover rounded-lg shadow-lg p-6 m-2">
+                <h3 class="font-semibold text-lg text-gray-900 dark:text-white">
+                    <a href="/blogs/renew-ssl-certificate/" class="hover:text-blue-500 dark:hover:text-blue-400">How to Renew Your SSL Certificates: A Quick Guide</a>
+                </h3>
+                <p class="text-xl mb-2 text-gray-800 dark:text-gray-300">
+                    Learn how to renew your SSL certificates and keep your website secure. A quick, step-by-step guide for easy certificate renewal.
+                    <a href="/blogs/renew-ssl-certificate/"  class="text-blue-600 dark:text-blue-400 hover:underline">read more...</a>
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
 
 <!-- Footer -->
 <footer class="bg-gray-800 dark:bg-gray-900 text-white py-4 mt-8">
