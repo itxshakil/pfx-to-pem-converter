@@ -173,8 +173,8 @@ if (empty($_SESSION['csrf_token'])) {
     </section>
     <section class="mt-4">
         <h4 class="text-xl underline p-4 font-bold">Related Articles</h4>
-        <div class="flex flex-col md:flex-row gap-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 mx-4 mx-4">
-            <div class="w-full h-auto bg-gray-100 dark:bg-gray-900 bg-cover rounded-lg shadow-lg p-6 m-2">
+        <div class="flex flex-col md:flex-row gap-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4">
+            <div class="w-full h-auto bg-gray-100 dark:bg-gray-900 bg-cover rounded-lg shadow-lg p-6">
                 <h3 class="font-semibold text-lg text-gray-900 dark:text-white">
                     <a href="/blogs/extract-ssl-certificate-from-pfx/" class="hover:text-blue-500 dark:hover:text-blue-400">
                     How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease
@@ -186,7 +186,7 @@ if (empty($_SESSION['csrf_token'])) {
                 </p>
             </div>
 
-            <div class="w-full h-auto bg-gray-100 dark:bg-gray-900 bg-cover rounded-lg shadow-lg p-6 m-2">
+            <div class="w-full h-auto bg-gray-100 dark:bg-gray-900 bg-cover rounded-lg shadow-lg p-6">
                 <h3 class="font-semibold text-lg text-gray-900 dark:text-white">
                     <a href="/blogs/renew-ssl-certificate/" class="hover:text-blue-500 dark:hover:text-blue-400">How to Renew Your SSL Certificates: A Quick Guide</a>
                 </h3>
