@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://pfx-to-pem-converter.shakiltech.com/</loc>
+  <lastmod>2024-11-25T15:07:05+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://pfx-to-pem-converter.shakiltech.com/blogs/extract-ssl-certificate-from-pfx/</loc>
+  <lastmod>2024-11-25T15:07:05+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://pfx-to-pem-converter.shakiltech.com/blogs/renew-ssl-certificate/</loc>
+  <lastmod>2024-11-25T15:07:05+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://pfx-to-pem-converter.shakiltech.com/blogs/install-ssl-apache/</loc>
+  <lastmod>2024-11-25T15:07:05+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://pfx-to-pem-converter.shakiltech.com/blogs/ssl-certificate-chain/</loc>
+  <lastmod>2024-11-25T15:07:05+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://pfx-to-pem-converter.shakiltech.com/blogs/ssl-importance/</loc>
+  <lastmod>2024-11-25T15:07:05+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://pfx-to-pem-converter.shakiltech.com/blogs/ssl-tls-key-difference/</loc>
+  <lastmod>2024-11-25T15:07:05+00:00</lastmod>
+  <priority>0.41</priority>
+</url>
+
+
+</urlset>
