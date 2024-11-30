@@ -103,7 +103,7 @@
             <h4 class="text-xl font-semibold text-center py-4">Get Your SSL Certificate Now!</h4>
             <p class="text-center">Don’t wait to secure your website. Get started with an SSL certificate today and protect your data and visitors.</p>
             <div class="text-center py-4">
-                <a href="https://www.yoursslprovider.com" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Get SSL Certificate</a>
+                <a href="https://ssls.sjv.io/c/2477633/559014/9312" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Get SSL Certificate</a>
             </div>
         </section>
 
