@@ -70,7 +70,20 @@ if (empty($_SESSION['csrf_token'])) {
             "@type": "AggregateRating",
             "ratingValue": "4.5",
             "reviewCount": "87"
-          }
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": "https://pfx-to-pem-converter.shakiltech.com",
+            "price": 0,
+            "eligibleRegion": {
+                "@type": "Place",
+                "name": "Worldwide"
+            },
+            "seller": {
+                "@type": "Organization",
+                "name": "Shakil Alam"
+                }
+            }
         }
 
     </script>
