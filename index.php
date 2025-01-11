@@ -75,6 +75,7 @@ if (empty($_SESSION['csrf_token'])) {
             "@type": "Offer",
             "url": "https://pfx-to-pem-converter.shakiltech.com",
             "price": 0,
+            "priceCurrency" : "INR",
             "eligibleRegion": {
                 "@type": "Place",
                 "name": "Worldwide"
