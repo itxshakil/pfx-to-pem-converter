@@ -147,7 +147,7 @@ if (empty($_SESSION['csrf_token'])) {
     </section>
 
     <!-- 5-Star Rating Section -->
-    <section id="reviews" class="mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+    <section id="reviews" class="mx-4 mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">User Reviews</h3>
         <div class="flex items-center space-x-2 mt-4">
             <span class="text-yellow-500">★★★★☆</span> <!-- 4.5 stars -->
@@ -157,7 +157,7 @@ if (empty($_SESSION['csrf_token'])) {
     </section>
 
     <!-- How It Works Section -->
-    <section id="how-it-works" class="mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+    <section id="how-it-works" class="mx-4 mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">How It Works</h3>
         <ol class="list-decimal list-inside space-y-2 mt-4 text-gray-600 dark:text-gray-400">
             <li>Upload your .pfx file to extract the private key and certificate.</li>
@@ -167,7 +167,7 @@ if (empty($_SESSION['csrf_token'])) {
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+    <section id="faq" class="mx-4 mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Frequently Asked Questions</h3>
         <div class="space-y-4 mt-4">
             <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg">
