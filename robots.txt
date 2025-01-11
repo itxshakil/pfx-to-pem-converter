@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://pfx-to-pem-converter.shakiltech.com/sitemap.xml
