@@ -679,15 +679,14 @@ $ openssl rsa -in key.pem -out private.key
                     <span class="text-2xl font-bold">PFX to PEM Converter</span>
                 </div>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-300 hover:text-white transition duration-200">
+                    <a href="https://www.x.com/in/itxshakil/" class="text-gray-300 hover:text-white transition duration-200">
                         <i class="fab fa-twitter text-xl"></i>
                     </a>
-                    <a href="#" class="text-gray-300 hover:text-white transition duration-200">
+                    <a href="https://www.github.com/in/itxshakil/" class="text-gray-300 hover:text-white transition duration-200">
                         <i class="fab fa-github text-xl"></i>
                     </a>
-                    <a href="#" class="text-gray-300 hover:text-white transition duration-200">
-                        <i class="fab fa-linkedin text-xl"></i>
-                    </a>
+                    <a href="https://www.linkedin.com/in/itxshakil/" class="text-gray-300 hover:text-white transition duration-200">
+                        <
                 </div>
             </div>
 
