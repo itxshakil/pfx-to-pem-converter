@@ -725,9 +725,53 @@ $ openssl rsa -in key.pem -out private.key
             </div>
         </div>
     </footer>
+    <div class="fixed bottom-0 end-0 p-4">
+        <button id="shareButton" class="px-6 py-3 bg-white text-blue-700 rounded-full font-bold hover:bg-yellow-100 transition duration-300 shadow-lg flex items-center">
+            <i class="fas fa-share mr-2"></i> Share
+        </button>
+    </div>
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const shareButton = document.getElementById('shareButton');
+
+        // Check if Web Share API is supported
+        if (navigator.share) {
+            shareButton.addEventListener('click', async () => {
+                try {
+                    await navigator.share({
+                        title: '🔒 PFX to PEM Converter - Free Secure Tool',
+                        text: 'I found this amazing tool that converts PFX to PEM files instantly, right in your browser! No data is sent to servers - completely secure and private. Perfect for setting up SSL on Apache, Nginx, or any web server. Save hours of command-line work! ✨',
+                        url: window.location.href
+                    });
+                    console.log('Successfully shared');
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                }
+            });
+        } else {
+            // Fallback for browsers that don't support the Web Share API
+            shareButton.addEventListener('click', () => {
+                // Create a temporary input to copy the URL
+                const input = document.createElement('input');
+                input.value = window.location.href;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+
+                // Change button text temporarily to show feedback
+                const originalText = shareButton.innerHTML;
+                shareButton.innerHTML = '<i class="fas fa-check mr-2"></i> URL Copied!';
+
+                setTimeout(() => {
+                    shareButton.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+    });
+
     // Mobile menu toggle
     document.getElementById('mobile-menu-button').addEventListener('click', function() {
         const mobileMenu = document.getElementById('mobile-menu');
