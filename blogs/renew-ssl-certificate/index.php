@@ -38,6 +38,7 @@
 
     <!-- Tailwind CSS -->
     <link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="manifest" href="manifest.json" />
     <!-- Google tag (gtag.js) -->
@@ -55,7 +56,7 @@
 
 <header class="bg-blue-600 text-white py-4">
     <div class="container mx-auto px-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">PFX to PEM Converter</h1>
+        <a href="/" class="text-2xl font-bold">PFX to PEM Converter</a>
         <nav>
             <a href="/" class="text-white hover:text-gray-200 mx-2">Home</a>
         </nav>
@@ -130,29 +131,42 @@
     </article>
 
     <section>
-        <h4 class="text-xl underline p-4 font-bold">Related Articles</h4>
-        <div class="flex flex-col md:flex-row gap-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4">
-            <div class="w-full h-auto bg-gray-100 dark:bg-gray-900 bg-cover rounded-lg shadow-lg p-6">
-                <h3 class="font-semibold text-lg text-gray-900 dark:text-white">
-                    <a href="/blogs/extract-ssl-certificate-from-pfx/" class="hover:text-blue-500 dark:hover:text-blue-400">
+        <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4 flex items-center">
+                <i class="fas fa-newspaper text-blue-600 dark:text-blue-400 mr-3"></i>
+                Related Articles
+            </h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <a href="/blogs/extract-ssl-certificate-from-pfx/" class="glass-card p-6 hover:shadow-xl transition duration-300">
+                <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
+                    <i class="fas fa-star text-4xl text-green-500 dark:text-green-400"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
                     How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease
-                    </a>
                 </h3>
-                <p class="text-xl mb-2 text-gray-800 dark:text-gray-300">
-                Learn how to extract SSL certificates from a PFX file using OpenSSL. A step-by-step guide to converting your SSL certificates quickly and securely.
-                    <a href="/blogs/extract-ssl-certificate-from-pfx/" class="text-blue-600 dark:text-blue-400 hover:underline">read more...</a>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Learn how to extract SSL certificates from a PFX file using OpenSSL. A step-by-step guide to converting your SSL certificates quickly and securely.
                 </p>
-            </div>
-
-            <div class="w-full h-auto bg-gray-100 dark:bg-gray-900 bg-cover rounded-lg shadow-lg p-6">
-                <h3 class="font-semibold text-lg text-gray-900 dark:text-white">
-                    <a href="/blogs/ssl-certificate-chain/" class="hover:text-blue-500 dark:hover:text-blue-400">Understanding SSL Certificate Chains and How They Work</a>
+                <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
+                    Read more
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </div>
+            </a>
+            
+            <a href="/blogs/ssl-certificate-chain/" class="glass-card p-6 hover:shadow-xl transition duration-300">
+                <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
+                    <i class="fas fa-sync text-4xl text-green-500 dark:text-green-400"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
+                    Understanding SSL Certificate Chains and How They Work
                 </h3>
-                <p class="text-xl mb-2 text-gray-800 dark:text-gray-300">
-                Learn about SSL certificate chains, how they work, and why they are important for securing your website.
-                    <a href="/blogs/ssl-certificate-chain/"  class="text-blue-600 dark:text-blue-400 hover:underline">read more...</a>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Learn about SSL certificate chains, how they work, and why they are important for securing your website.
                 </p>
-            </div>
+                <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
+                    Read more
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </div>
+            </a>
         </div>
     </section>
 </div>
