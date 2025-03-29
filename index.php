@@ -685,8 +685,9 @@ $ openssl rsa -in key.pem -out private.key
                     <a href="https://www.github.com/in/itxshakil/" class="text-gray-300 hover:text-white transition duration-200">
                         <i class="fab fa-github text-xl"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/itxshakil/" class="text-gray-300 hover:text-white transition duration-200">
-                        <
+                    <a href="#" class="text-gray-300 hover:text-white transition duration-200">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
                 </div>
             </div>
 
