@@ -350,7 +350,7 @@ $ openssl rsa -in key.pem -out private.key
                         <div class="relative">
                             <input id="password" type="password" name="password"
                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
-                                   required>
+                                   >
                             <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 focus:outline-none">
                                 <i class="fas fa-eye"></i>
                             </button>
