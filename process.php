@@ -76,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             readfile($zipFilePath);
 
             unlink($zipFilePath);
-            header('Location: index.php');
             exit;
         } else {
             unlink($pfxFilePath);
