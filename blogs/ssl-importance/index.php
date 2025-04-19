@@ -67,7 +67,7 @@
 
 <div class="container max-w-7xl mx-auto mt-6">
     <article>
-        <h2>What is SSL and Why is it Important for Website Security?</h2>
+        <h1>What is SSL and Why is it Important for Website Security?</h1>
         <section id="what-is-ssl">
             <p>In today’s digital age, ensuring the security of your website is more important than ever. SSL (Secure Sockets Layer) certificates are key to providing encrypted communications between a website and its visitors. This protocol ensures that any data transferred between the two parties is secure and cannot be intercepted by malicious actors.</p>
         </section>

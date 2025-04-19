@@ -78,7 +78,7 @@
 
 <div class="container max-w-7xl mx-auto mt-6">
     <article>
-        <h2>How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease</h2>
+        <h1>How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease</h1>
         <section>
             <p>In today's digital world, securing your website with an <strong>SSL certificate</strong> is more
                 important than ever. Whether you're running an e-commerce platform or a personal blog, SSL certificates

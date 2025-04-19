@@ -66,7 +66,7 @@
 <div class="container max-w-7xl mx-auto mt-6">
     <article>
         <section class="intro mb-6">
-            <h2>SSL vs TLS: Key Differences and Why They Matter</h2>
+            <h1>SSL vs TLS: Key Differences and Why They Matter</h1>
             <p>
                 When securing data transmitted over the internet, both SSL (Secure Sockets Layer) and TLS (Transport Layer Security) are protocols that play crucial roles in encrypting communication between servers and clients. However, despite their similarities, they are not exactly the same. TLS is the successor to SSL, and over time, it has become the more widely used protocol for ensuring secure communications.
             </p>

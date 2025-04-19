@@ -8,6 +8,10 @@ article {
 }
 
 /* Headings */
+article h1 {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-extrabold text-center pb-6 text-blue-600 dark:text-blue-400 text-balance;
+}
+
 article h2 {
     @apply text-3xl sm:text-4xl lg:text-5xl font-extrabold text-center pb-6 text-blue-600 dark:text-blue-400 text-balance;
 }

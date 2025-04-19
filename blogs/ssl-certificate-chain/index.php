@@ -66,7 +66,7 @@
 <div class="container max-w-7xl mx-auto mt-6">
     <article>
         <section>
-            <h2>Understanding SSL Certificate Chains and How They Work</h2>
+            <h1>Understanding SSL Certificate Chains and How They Work</h1>
             <p>
                 When securing your website with an SSL certificate, the process involves more than just obtaining a single certificate. Websites use an SSL certificate chain to ensure that visitors can trust the site's identity and secure the data exchanged. But what exactly is an SSL certificate chain, and how does it work? In this article, we’ll dive deep into the concept of SSL certificate chains, their importance, and how they work to create a trusted and secure connection between your website and its visitors.
             </p>

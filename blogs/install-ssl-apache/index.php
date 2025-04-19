@@ -66,7 +66,7 @@
 <div class="container max-w-7xl mx-auto mt-6">
     <article>
         <section class="intro mb-6">
-            <h2>How to Install SSL Certificates on Apache Server</h2>
+            <h1>How to Install SSL Certificates on Apache Server</h1>
             <p>Imagine launching your website, only to be greeted by a "Not Secure" warning. It's a frustrating experience, and one that can deter visitors from trusting your site. SSL certificates are the key to securing your website and building trust with users. This guide will walk you through the process of installing SSL certificates on your Apache server — from start to finish.</p>
         </section>
 

@@ -65,7 +65,7 @@
 
 <div class="container max-w-7xl mx-auto mt-6">
     <article>
-        <h2>How to Renew Your SSL Certificates: A Quick Guide</h2>
+        <h1>How to Renew Your SSL Certificates: A Quick Guide</h1>
         <section>
             <p>SSL certificates are essential for maintaining the trust of your website visitors and securing sensitive data. However, SSL certificates come with expiration dates, and if you don’t renew them on time, you could face security warnings or even loss of traffic. In this guide, we'll show you how to renew your SSL certificates in just a few simple steps, ensuring your website remains secure and trusted.</p>
         </section>
