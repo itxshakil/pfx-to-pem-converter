@@ -186,12 +186,28 @@ if (empty($_SESSION['csrf_token'])) {
         .grow-on-hover:hover {
             transform: scale(1.03);
         }
+
+        /* Skip offscreen layout/paint work on below-the-fold sections */
+        .cv-section {
+            content-visibility: auto;
+            contain-intrinsic-size: 0 600px;
+        }
+
+        /* Drag-and-drop active state for the upload area */
+        #dropzone {
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        #dropzone.is-dragover {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.08);
+        }
     </style>
 </head>
 
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white scroll-mt-20 scroll-smooth">
 
-<div class="min-h-screen flex flex-col">
+<div class="min-h-[100svh] flex flex-col">
     <!-- Navigation -->
     <header class="gradient-bg text-white py-4 sticky top-0 z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
@@ -242,7 +258,7 @@ if (empty($_SESSION['csrf_token'])) {
                 </svg>
             </div>
             <div class="z-10 px-8 md:px-16 py-6 md:w-1/2">
-                <h2 class="text-4xl font-bold text-white mb-4">Secure PFX to PEM Conversion</h2>
+                <h1 class="text-4xl font-bold text-white mb-4">Secure PFX to PEM Conversion</h1>
                 <p class="text-white text-lg opacity-90 mb-8">
                     Extract private keys and certificates from your PFX files with our secure, fast, and easy-to-use tool.
                 </p>
@@ -307,10 +323,10 @@ $ openssl rsa -in key.pem -out private.key
                 <form action="process.php" method="post" enctype="multipart/form-data" class="space-y-6">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
 
-                    <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600">
+                    <div id="dropzone" class="bg-gray-50 dark:bg-gray-700 p-6 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600">
                         <label class="custom-file-input w-full flex flex-col items-center justify-center">
                             <div class="mb-4 text-blue-600 dark:text-blue-400 text-center">
-                                <i class="fas fa-file-upload text-5xl"></i>
+                                <i class="fas fa-file-upload text-5xl" aria-hidden="true"></i>
                             </div>
                             <div class="text-center mb-2">
                                 <span class="text-gray-700 dark:text-gray-200 font-medium">Drag your .pfx file here or click to browse</span>
@@ -318,9 +334,10 @@ $ openssl rsa -in key.pem -out private.key
                             <p class="text-gray-500 dark:text-gray-400 text-sm text-center">
                                 Maximum file size: 10MB
                             </p>
-                            <input id="file" type="file" name="file" class="hidden" required accept=".pfx">
-                            <div id="file-name" class="mt-3 text-gray-600 dark:text-gray-300 text-sm"></div>
+                            <input id="file" type="file" name="file" class="hidden" required accept=".pfx" aria-describedby="file-error">
                         </label>
+                        <div id="file-name" class="mt-3 text-sm"></div>
+                        <p id="file-error" class="mt-3 text-sm text-red-600 dark:text-red-400 hidden" role="alert"></p>
                     </div>
 
                     <div class="relative">
@@ -345,6 +362,19 @@ $ openssl rsa -in key.pem -out private.key
                         Extract & Download PEM Files
                     </button>
                 </form>
+            </div>
+        </section>
+
+        <!-- What happens to your file (honest trust block) -->
+        <section aria-labelledby="privacy-heading" class="mx-auto max-w-4xl mb-12 bg-blue-50 dark:bg-gray-800 border border-blue-100 dark:border-gray-700 rounded-2xl p-6 md:p-8">
+            <div class="flex items-start">
+                <i class="fas fa-user-shield text-blue-600 dark:text-blue-400 text-2xl mr-4 mt-1" aria-hidden="true"></i>
+                <div>
+                    <h2 id="privacy-heading" class="text-lg font-semibold text-gray-800 dark:text-white mb-2">What happens to your file</h2>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Your <code class="text-sm">.pfx</code> file is uploaded over an encrypted (HTTPS) connection and processed in an isolated, temporary folder on our server. The private key, certificate, and ZIP are generated, sent to you, and then permanently deleted in the same request. We never store your file or your password, and nothing is logged.
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -374,7 +404,7 @@ $ openssl rsa -in key.pem -out private.key
         </section>
 
         <!-- Features Section -->
-        <section id="features" class="mb-16 scroll-mt-20">
+        <section id="features" class="mb-16 scroll-mt-20 cv-section">
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Why Choose Our Converter?</h2>
                 <div class="w-24 h-1 bg-blue-600 mx-auto mt-4"></div>
@@ -433,7 +463,7 @@ $ openssl rsa -in key.pem -out private.key
 
 
         <!-- How It Works Section -->
-        <section id="how-it-works" class="mx-auto max-w-4xl mb-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg scroll-mt-20">
+        <section id="how-it-works" class="mx-auto max-w-4xl mb-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg scroll-mt-20 cv-section">
             <div class="flex items-center mb-8">
                 <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-4">
                     <i class="fas fa-magic text-xl text-white"></i>
@@ -496,7 +526,7 @@ $ openssl rsa -in key.pem -out private.key
         </section>
 
         <!-- FAQ Section -->
-        <section id="faq" class="mx-auto max-w-4xl mb-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg scroll-mt-20">
+        <section id="faq" class="mx-auto max-w-4xl mb-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg scroll-mt-20 cv-section">
             <div class="flex items-center mb-8">
                 <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-4">
                     <i class="fas fa-question-circle text-xl text-white"></i>
@@ -562,7 +592,7 @@ $ openssl rsa -in key.pem -out private.key
         </section>
 
         <!-- Related Articles -->
-        <section class="mx-auto max-w-4xl mb-16 scroll-mt-20">
+        <section class="mx-auto max-w-4xl mb-16 scroll-mt-20 cv-section">
             <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4 flex items-center">
                 <i class="fas fa-newspaper text-blue-600 dark:text-blue-400 mr-3"></i>
                 Related Articles
@@ -745,31 +775,124 @@ $ openssl rsa -in key.pem -out private.key
         }
     });
 
-    // Display filename when file is selected
-    document.getElementById('file').addEventListener('change', function() {
-        const fileName = this.files[0]?.name;
-        const fileNameElement = document.getElementById('file-name');
+    // File upload: drag-and-drop, client-side validation, and a removable file chip
+    (function () {
+        const MAX_BYTES = 10 * 1024 * 1024; // keep in sync with process.php
+        const fileInput = document.getElementById('file');
+        const dropzone = document.getElementById('dropzone');
+        const chip = document.getElementById('file-name');
+        const errorEl = document.getElementById('file-error');
 
-        if (fileName) {
-            fileNameElement.innerHTML = `<div class="py-2 px-3 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg flex items-center"><i class="fas fa-file-alt mr-2"></i>${fileName}</div>`;
-        } else {
-            fileNameElement.innerHTML = '';
-        }
-    });
+        const formatSize = (bytes) => {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        };
 
-    // FAQ toggles
-    document.querySelectorAll('.faq-toggle').forEach(toggle => {
-        toggle.addEventListener('click', function() {
-            const content = this.nextElementSibling;
+        const showError = (msg) => {
+            errorEl.textContent = msg;
+            errorEl.classList.remove('hidden');
+        };
+        const clearError = () => {
+            errorEl.textContent = '';
+            errorEl.classList.add('hidden');
+        };
+
+        const clearFile = () => {
+            fileInput.value = '';
+            chip.innerHTML = '';
+        };
+
+        const renderChip = (file) => {
+            chip.innerHTML = '';
+            const wrap = document.createElement('div');
+            wrap.className = 'py-2 px-3 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg flex items-center justify-between gap-3';
+            const label = document.createElement('span');
+            label.className = 'flex items-center min-w-0';
+            label.innerHTML = '<i class="fas fa-file-alt mr-2" aria-hidden="true"></i>';
+            const name = document.createElement('span');
+            name.className = 'truncate';
+            name.textContent = `${file.name} (${formatSize(file.size)})`;
+            label.appendChild(name);
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'shrink-0 text-blue-700 dark:text-blue-300 hover:text-red-600 focus:outline-none';
+            remove.setAttribute('aria-label', 'Remove selected file');
+            remove.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
+            remove.addEventListener('click', () => { clearFile(); clearError(); });
+            wrap.appendChild(label);
+            wrap.appendChild(remove);
+            chip.appendChild(wrap);
+        };
+
+        const validate = (file) => {
+            if (!file.name.toLowerCase().endsWith('.pfx')) {
+                return 'Only .pfx files are allowed.';
+            }
+            if (file.size > MAX_BYTES) {
+                return `That file is ${formatSize(file.size)}. The maximum size is 10MB.`;
+            }
+            return null;
+        };
+
+        const handleFile = (file) => {
+            if (!file) return;
+            const problem = validate(file);
+            if (problem) {
+                showError(problem);
+                clearFile();
+                return;
+            }
+            clearError();
+            renderChip(file);
+        };
+
+        fileInput.addEventListener('change', function () {
+            handleFile(this.files[0]);
+        });
+
+        ['dragenter', 'dragover'].forEach(evt =>
+            dropzone.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropzone.classList.add('is-dragover');
+            })
+        );
+        ['dragleave', 'dragend'].forEach(evt =>
+            dropzone.addEventListener(evt, () => dropzone.classList.remove('is-dragover'))
+        );
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('is-dragover');
+            const dropped = e.dataTransfer.files && e.dataTransfer.files[0];
+            if (!dropped) return;
+            // Assign the dropped file to the input so it submits with the form
+            const dt = new DataTransfer();
+            dt.items.add(dropped);
+            fileInput.files = dt.files;
+            handleFile(dropped);
+        });
+    })();
+
+    // FAQ accordion with ARIA state
+    document.querySelectorAll('.faq-toggle').forEach((toggle, i) => {
+        const content = toggle.nextElementSibling;
+        const panelId = `faq-panel-${i}`;
+        content.id = panelId;
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-controls', panelId);
+
+        toggle.addEventListener('click', function () {
             const icon = this.querySelector('i');
+            const isOpen = !!content.style.maxHeight;
 
-            // Toggle visibility
-            if (content.style.maxHeight) {
+            if (isOpen) {
                 content.style.maxHeight = null;
                 icon.classList.remove('rotate-180');
+                this.setAttribute('aria-expanded', 'false');
             } else {
                 content.style.maxHeight = content.scrollHeight + 'px';
                 icon.classList.add('rotate-180');
+                this.setAttribute('aria-expanded', 'true');
             }
         });
     });
