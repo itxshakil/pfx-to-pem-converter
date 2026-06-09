@@ -99,12 +99,158 @@ $zip->addFile($privateKeyFile, 'private.pem');
 $zip->addFile($certFile, 'cert.pem');
 $zip->close();
 
-header('Content-Type: application/zip');
-header('Content-Disposition: attachment; filename="' . $zipFileName . '"');
-header('Content-Length: ' . filesize($zipFilePath));
-header('X-Content-Type-Options: nosniff');
-readfile($zipFilePath);
+// Read the results into memory so the page can offer copy + per-file and ZIP
+// downloads entirely client-side. Nothing is persisted: the temp dir (PFX,
+// PEMs, ZIP) is wiped by the shutdown handler the moment this request ends.
+$privateKeyPem = $pkcs12['pkey'];
+$certPem       = $pkcs12['cert'];
+$zipBase64     = base64_encode((string) file_get_contents($zipFilePath));
 
-// Temp files (including the freshly created ZIP) are removed by the
-// shutdown handler registered above.
+// This page contains the user's private key: never cache or index it.
+if (!headers_sent()) {
+    header('Cache-Control: no-store, max-age=0');
+    header('Pragma: no-cache');
+    header('X-Robots-Tag: noindex');
+}
+
+$page = [
+    'title'       => 'Conversion Complete – PFX to PEM Converter',
+    'description' => 'Your PFX file has been converted to PEM format.',
+    'bodyClass'   => 'bg-gray-50 dark:bg-gray-900 dark:text-white',
+];
+require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
+?>
+<main class="flex-grow">
+    <section class="py-12">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="text-center mb-8">
+                <i class="fas fa-circle-check text-5xl text-green-500 mb-4" aria-hidden="true"></i>
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">Conversion complete</h1>
+                <p class="text-gray-600 dark:text-gray-300">
+                    Copy the contents below or download the files. Everything was processed in memory and
+                    has already been deleted from the server.
+                </p>
+            </div>
+
+            <div class="glass-card p-6 mb-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+                        <i class="fas fa-key text-blue-600 dark:text-blue-400 mr-2" aria-hidden="true"></i>private.pem
+                    </h2>
+                    <div class="flex flex-wrap gap-4">
+                        <button type="button" data-copy="pem-key"
+                                class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-copy mr-2" aria-hidden="true"></i><span class="copy-label">Copy</span>
+                        </button>
+                        <button type="button" data-download="pem-key" data-filename="private.pem"
+                                class="inline-flex items-center px-4 py-2 rounded-lg bg-gray-800 dark:bg-gray-700 text-white font-medium hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-download mr-2" aria-hidden="true"></i>Download
+                        </button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    <i class="fas fa-triangle-exclamation mr-1" aria-hidden="true"></i>
+                    Keep your private key secret. Store it somewhere safe and never share it.
+                </p>
+                <pre id="pem-key" class="pem-block"><?= htmlspecialchars($privateKeyPem, ENT_QUOTES) ?></pre>
+            </div>
+
+            <div class="glass-card p-6 mb-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+                        <i class="fas fa-certificate text-blue-600 dark:text-blue-400 mr-2" aria-hidden="true"></i>cert.pem
+                    </h2>
+                    <div class="flex flex-wrap gap-4">
+                        <button type="button" data-copy="pem-cert"
+                                class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-copy mr-2" aria-hidden="true"></i><span class="copy-label">Copy</span>
+                        </button>
+                        <button type="button" data-download="pem-cert" data-filename="cert.pem"
+                                class="inline-flex items-center px-4 py-2 rounded-lg bg-gray-800 dark:bg-gray-700 text-white font-medium hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-download mr-2" aria-hidden="true"></i>Download
+                        </button>
+                    </div>
+                </div>
+                <pre id="pem-cert" class="pem-block"><?= htmlspecialchars($certPem, ENT_QUOTES) ?></pre>
+            </div>
+
+            <div class="text-center">
+                <button type="button" id="download-zip"
+                        data-zip="<?= $zipBase64 ?>" data-filename="<?= htmlspecialchars($zipFileName, ENT_QUOTES) ?>"
+                        class="inline-flex items-center px-6 py-3 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition duration-200 shadow-lg">
+                    <i class="fas fa-file-zipper mr-2" aria-hidden="true"></i>Download both as .zip
+                </button>
+                <p class="mt-6">
+                    <a href="/" class="text-blue-600 dark:text-blue-400 font-medium">
+                        <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>Convert another file
+                    </a>
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+<script nonce="<?= $nonce ?>">
+    (function () {
+        'use strict';
+
+        const flash = (btn, text) => {
+            const label = btn.querySelector('.copy-label');
+            if (!label) return;
+            const original = label.textContent;
+            label.textContent = text;
+            setTimeout(() => { label.textContent = original; }, 2000);
+        };
+
+        const saveBlob = (blob, filename) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        };
+
+        document.querySelectorAll('[data-copy]').forEach((btn) => {
+            btn.addEventListener('click', async () => {
+                const source = document.getElementById(btn.getAttribute('data-copy'));
+                if (!source) return;
+                try {
+                    await navigator.clipboard.writeText(source.textContent);
+                    flash(btn, 'Copied!');
+                } catch (err) {
+                    flash(btn, 'Press Ctrl+C');
+                }
+            });
+        });
+
+        document.querySelectorAll('[data-download]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const source = document.getElementById(btn.getAttribute('data-download'));
+                if (!source) return;
+                saveBlob(new Blob([source.textContent], { type: 'application/x-pem-file' }),
+                    btn.getAttribute('data-filename'));
+            });
+        });
+
+        const zipBtn = document.getElementById('download-zip');
+        if (zipBtn) {
+            zipBtn.addEventListener('click', () => {
+                const binary = atob(zipBtn.getAttribute('data-zip'));
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                saveBlob(new Blob([bytes], { type: 'application/zip' }),
+                    zipBtn.getAttribute('data-filename'));
+            });
+        }
+    })();
+</script>
+<?php
+require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php';
+
+// Temp files (PFX, PEMs, ZIP) are removed by the shutdown handler above.
 exit;

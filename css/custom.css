@@ -96,3 +96,34 @@ body {
     border-color: #3b82f6;
     background-color: rgba(59, 130, 246, 0.08);
 }
+
+/* Result page: monospace PEM blocks (scrollable, wrapping, selectable) */
+.pem-block {
+    margin: 0;
+    max-height: 14rem;
+    overflow: auto;
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    background: #f8fafc;
+    color: #1f2937;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    white-space: pre;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dark .pem-block {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .pem-block {
+        border-color: rgba(255, 255, 255, 0.12);
+        background: #0f172a;
+        color: #e2e8f0;
+    }
+}
