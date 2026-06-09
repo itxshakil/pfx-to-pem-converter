@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const shareButton = document.getElementById('shareButton');
+    if (!shareButton) return;
 
     // Check if Web Share API is supported
     if (navigator.share) {
@@ -39,31 +40,37 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Mobile menu toggle
-document.getElementById('mobile-menu-button').addEventListener('click', function () {
-    const mobileMenu = document.getElementById('mobile-menu');
-    const isHidden = mobileMenu.classList.toggle('hidden');
-    this.setAttribute('aria-expanded', String(!isHidden));
-});
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+if (mobileMenuButton) {
+    mobileMenuButton.addEventListener('click', function () {
+        const mobileMenu = document.getElementById('mobile-menu');
+        const isHidden = mobileMenu.classList.toggle('hidden');
+        this.setAttribute('aria-expanded', String(!isHidden));
+    });
+}
 
 // Password visibility toggle
-document.getElementById('toggle-password').addEventListener('click', function () {
-    const passwordInput = document.getElementById('password');
-    const icon = this.querySelector('i');
+const togglePassword = document.getElementById('toggle-password');
+if (togglePassword) {
+    togglePassword.addEventListener('click', function () {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
 
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-        this.setAttribute('aria-pressed', 'true');
-        this.setAttribute('aria-label', 'Hide password');
-    } else {
-        passwordInput.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-        this.setAttribute('aria-pressed', 'false');
-        this.setAttribute('aria-label', 'Show password');
-    }
-});
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+            this.setAttribute('aria-pressed', 'true');
+            this.setAttribute('aria-label', 'Hide password');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+            this.setAttribute('aria-pressed', 'false');
+            this.setAttribute('aria-label', 'Show password');
+        }
+    });
+}
 
 // File upload: drag-and-drop, client-side validation, and a removable file chip
 (function () {
@@ -72,6 +79,9 @@ document.getElementById('toggle-password').addEventListener('click', function ()
     const dropzone = document.getElementById('dropzone');
     const chip = document.getElementById('file-name');
     const errorEl = document.getElementById('file-error');
+
+    // Only the converter page has the upload UI; bail out everywhere else.
+    if (!fileInput || !dropzone || !chip || !errorEl) return;
 
     const formatSize = (bytes) => {
         if (bytes < 1024) return bytes + ' B';

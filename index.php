@@ -6,161 +6,54 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Per-request nonce for inline scripts allowed by the CSP below.
-$nonce = base64_encode(random_bytes(16));
-
-// Content Security Policy + hardening headers.
-header(
-    "Content-Security-Policy: " .
-    "default-src 'self'; " .
-    "script-src 'self' 'nonce-$nonce' https://www.googletagmanager.com https://www.google-analytics.com; " .
-    "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; " .
-    "font-src 'self' https://cdnjs.cloudflare.com; " .
-    "img-src 'self' data: https://www.google-analytics.com https://ui-avatars.com; " .
-    "connect-src 'self' https://www.google-analytics.com; " .
-    "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
-);
-header('X-Content-Type-Options: nosniff');
-header('Referrer-Policy: strict-origin-when-cross-origin');
-header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extract Private Key and Certificate from PFX | Secure PFX to PEM Converter</title>
-
-    <meta name="theme-color" content="#1e40af" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="#1e40af" />
-    <meta name="apple-mobile-web-app-title" content="PFX to PEM Converter" />
-    <meta name="msapplication-TitleImage" content="/images/ios/144.png" />
-    <meta name="msapplication-TitleColor" content="#1e40af" />
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/images/ios/512.png">
-
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Extract private key and certificate from your .pfx file and convert it to PEM format. Securely extract the private key and certificate from PFX files for server compatibility and SSL management.">
-    <meta name="keywords" content="extract private key from PFX, extract certificate from PFX, PFX to PEM, PFX converter, PEM converter, SSL certificate tool, PKCS#12 to PEM, PFX private key extraction, PFX certificate extraction">
-    <meta name="author" content="Shakil Alam">
-
-    <!-- Open Graph Meta Tags for Social Sharing -->
-    <meta property="og:title" content="Extract Private Key and Certificate from PFX | Secure Conversion">
-    <meta property="og:description" content="Extract private key and certificate from PFX files, then convert to PEM format with our secure and easy-to-use tool. Perfect for SSL/TLS certificate management.">
-    <meta property="og:image" content="https://ui-avatars.com/api/?name=PFX+to+PEM&background=1e40af&color=ffffff&size=512">
-    <meta property="og:url" content="https://pfx-to-pem-converter.shakiltech.com">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_US">
-
-    <!-- Twitter Card Data -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Extract Private Key and Certificate from PFX | Secure Conversion">
-    <meta name="twitter:description" content="Extract private key and certificate from your PFX file and easily convert it to PEM format with a secure and user-friendly tool.">
-    <meta name="twitter:image" content="https://ui-avatars.com/api/?name=PFX+to+PEM&background=1e40af&color=ffffff&size=512">
-
-    <!-- Canonical Link -->
-    <link rel="canonical" href="https://pfx-to-pem-converter.shakiltech.com">
-
-    <!-- Schema.org Structured Data Markup -->
-    <script type="application/ld+json" nonce="<?= $nonce ?>">
-        {
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "PFX to PEM Converter",
-            "description": "A tool to extract private key and certificate from .pfx file and convert it into PEM format for SSL/TLS management.",
-            "url": "https://pfx-to-pem-converter.shakiltech.com",
-            "applicationCategory": "Utilities",
-            "operatingSystem": "Web",
-            "softwareVersion": "1.0",
-            "author": {
-                "@type": "Organization",
-                "name": "Shakil Alam"
-            },
-            "license": "https://pfx-to-pem-converter.shakiltech.com/terms",
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://pfx-to-pem-converter.shakiltech.com"
-            },
-            "offers": {
-                "@type": "Offer",
-                "url": "https://pfx-to-pem-converter.shakiltech.com",
-                "price": 0,
-                "priceCurrency" : "INR",
-                "eligibleRegion": {
-                    "@type": "Place",
-                    "name": "Worldwide"
-                },
-                "seller": {
-                    "@type": "Organization",
-                    "name": "Shakil Alam"
-                }
-            }
+$page = [
+    'title'         => 'Extract Private Key and Certificate from PFX | Secure PFX to PEM Converter',
+    'description'   => 'Extract private key and certificate from your .pfx file and convert it to PEM format. Securely extract the private key and certificate from PFX files for server compatibility and SSL management.',
+    'keywords'      => 'extract private key from PFX, extract certificate from PFX, PFX to PEM, PFX converter, PEM converter, SSL certificate tool, PKCS#12 to PEM, PFX private key extraction, PFX certificate extraction',
+    'canonical'     => 'https://pfx-to-pem-converter.shakiltech.com',
+    'ogTitle'       => 'Extract Private Key and Certificate from PFX | Secure Conversion',
+    'ogDescription' => 'Extract private key and certificate from PFX files, then convert to PEM format with our secure and easy-to-use tool. Perfect for SSL/TLS certificate management.',
+    'image'         => 'https://ui-avatars.com/api/?name=PFX+to+PEM&background=1e40af&color=ffffff&size=512',
+    'jsonld'        => <<<'JSONLD'
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PFX to PEM Converter",
+    "description": "A tool to extract private key and certificate from .pfx file and convert it into PEM format for SSL/TLS management.",
+    "url": "https://pfx-to-pem-converter.shakiltech.com",
+    "applicationCategory": "Utilities",
+    "operatingSystem": "Web",
+    "softwareVersion": "1.0",
+    "author": {
+        "@type": "Organization",
+        "name": "Shakil Alam"
+    },
+    "license": "https://pfx-to-pem-converter.shakiltech.com/terms",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://pfx-to-pem-converter.shakiltech.com"
+    },
+    "offers": {
+        "@type": "Offer",
+        "url": "https://pfx-to-pem-converter.shakiltech.com",
+        "price": 0,
+        "priceCurrency" : "INR",
+        "eligibleRegion": {
+            "@type": "Place",
+            "name": "Worldwide"
+        },
+        "seller": {
+            "@type": "Organization",
+            "name": "Shakil Alam"
         }
-    </script>
+    }
+}
+JSONLD,
+];
 
-    <!-- Tailwind CSS -->
-    <link href="/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <link rel="manifest" href="manifest.json" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-08FR6JHTZX"></script>
-    <script nonce="<?= $nonce ?>">
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-08FR6JHTZX');
-    </script>
-
-    <link href="/css/custom.css" rel="stylesheet">
-</head>
-
-<body class="bg-gray-50 dark:bg-gray-900 dark:text-white scroll-mt-20 scroll-smooth">
-
-<div class="min-h-[100svh] flex flex-col">
-    <!-- Navigation -->
-    <header class="gradient-bg text-white py-4 sticky top-0 z-50">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-2">
-                <i class="fas fa-key text-2xl text-yellow-300"></i>
-                <span class="text-2xl font-bold">PFX to PEM Converter</span>
-            </a>
-            <nav class="hidden md:flex items-center space-x-6">
-                <a href="#features" class="text-white hover:text-yellow-200 transition duration-200 flex items-center">
-                    <i class="fas fa-star mr-2"></i>Features
-                </a>
-                <a href="#how-it-works" class="text-white hover:text-yellow-200 transition duration-200 flex items-center">
-                    <i class="fas fa-cogs mr-2"></i>How It Works
-                </a>
-                <a href="#faq" class="text-white hover:text-yellow-200 transition duration-200 flex items-center">
-                    <i class="fas fa-question-circle mr-2"></i>FAQ
-                </a>
-            </nav>
-            <button id="mobile-menu-button" type="button" class="md:hidden text-white focus:outline-none" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-                <i class="fas fa-bars text-xl" aria-hidden="true"></i>
-            </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden">
-            <div class="glass-effect px-4 py-2 mx-4 mt-2 rounded-lg">
-                <a href="#features" class="block py-2 px-4 text-white hover:bg-blue-700 rounded">
-                    <i class="fas fa-star mr-2"></i>Features
-                </a>
-                <a href="#how-it-works" class="block py-2 px-4 text-white hover:bg-blue-700 rounded">
-                    <i class="fas fa-cogs mr-2"></i>How It Works
-                </a>
-                <a href="#faq" class="block py-2 px-4 text-white hover:bg-blue-700 rounded">
-                    <i class="fas fa-question-circle mr-2"></i>FAQ
-                </a>
-            </div>
-        </div>
-    </header>
-
+require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
+?>
     <main class="container max-w-7xl mx-auto mt-6 px-4 flex-grow">
         <section class="relative flex flex-col md:flex-row items-center justify-between py-12 mb-12 overflow-hidden rounded-3xl gradient-bg">
             <div class="absolute top-0 right-0 w-full h-full opacity-15">
@@ -559,73 +452,7 @@ $ openssl rsa -in key.pem -out private.key
             </a>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-                <div class="flex items-center mb-6 md:mb-0">
-                    <i class="fas fa-key text-2xl text-yellow-400 mr-3"></i>
-                    <span class="text-2xl font-bold">PFX to PEM Converter</span>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="https://www.x.com/itxshakil/" class="text-gray-300 hover:text-white transition duration-200">
-                        <i class="fab fa-twitter text-xl"></i>
-                    </a>
-                    <a href="https://www.github.com/itxshakil/" class="text-gray-300 hover:text-white transition duration-200">
-                        <i class="fab fa-github text-xl"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/itxshakil/" class="text-gray-300 hover:text-white transition duration-200">
-                        <i class="fab fa-linkedin text-xl"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-800 pt-8 pb-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">About</h4>
-                        <p class="text-gray-400">
-                            A free tool to extract private keys and certificates from PFX files and convert them to PEM format for use with web servers and applications.
-                        </p>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#" class="hover:text-white transition duration-200">Home</a></li>
-                            <li><a href="#features" class="hover:text-white transition duration-200">Features</a></li>
-                            <li><a href="#how-it-works" class="hover:text-white transition duration-200">How It Works</a></li>
-                            <li><a href="#faq" class="hover:text-white transition duration-200">FAQ</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Related Tools</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#" class="hover:text-white transition duration-200">SSL Checker</a></li>
-                            <li><a href="#" class="hover:text-white transition duration-200">CSR Generator</a></li>
-                            <li><a href="#" class="hover:text-white transition duration-200">Certificate Decoder</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                    <p class="mb-4 md:mb-0 text-gray-400">Developed with <i class="fas fa-heart text-red-500"></i> by <a href="https://shakiltech.com?utm_source=pfx2pem" class="text-blue-400 hover:text-blue-300 transition duration-200">Shakil Alam</a></p>
-                    <p class="text-gray-400">&copy; <?= date("Y") ?> PFX to PEM Converter. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <div class="fixed bottom-0 end-0 p-4">
-        <button id="shareButton" type="button" aria-label="Share this tool" class="px-6 py-3 bg-white text-blue-700 rounded-full font-bold hover:bg-yellow-100 transition duration-300 shadow-lg flex items-center">
-            <i class="fas fa-share mr-2" aria-hidden="true"></i> Share
-        </button>
-    </div>
-</div>
-
-<script src="/js/app.js" defer></script>
-</body>
-</html>
-
 <?php
+require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php';
+
 unset($_SESSION['error']);
-?>
