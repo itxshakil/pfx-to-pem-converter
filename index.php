@@ -6,6 +6,24 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
+// Per-request nonce for inline scripts allowed by the CSP below.
+$nonce = base64_encode(random_bytes(16));
+
+// Content Security Policy + hardening headers.
+header(
+    "Content-Security-Policy: " .
+    "default-src 'self'; " .
+    "script-src 'self' 'nonce-$nonce' https://www.googletagmanager.com https://www.google-analytics.com; " .
+    "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; " .
+    "font-src 'self' https://cdnjs.cloudflare.com; " .
+    "img-src 'self' data: https://www.google-analytics.com https://ui-avatars.com; " .
+    "connect-src 'self' https://www.google-analytics.com; " .
+    "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+);
+header('X-Content-Type-Options: nosniff');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
+
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +65,7 @@ if (empty($_SESSION['csrf_token'])) {
     <link rel="canonical" href="https://pfx-to-pem-converter.shakiltech.com">
 
     <!-- Schema.org Structured Data Markup -->
-    <script type="application/ld+json">
+    <script type="application/ld+json" nonce="<?= $nonce ?>">
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
@@ -65,11 +83,6 @@ if (empty($_SESSION['csrf_token'])) {
             "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "https://pfx-to-pem-converter.shakiltech.com"
-            },
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.5",
-                "reviewCount": "87"
             },
             "offers": {
                 "@type": "Offer",
@@ -95,7 +108,7 @@ if (empty($_SESSION['csrf_token'])) {
     <link rel="manifest" href="manifest.json" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-08FR6JHTZX"></script>
-    <script>
+    <script nonce="<?= $nonce ?>">
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -103,106 +116,7 @@ if (empty($_SESSION['csrf_token'])) {
         gtag('config', 'G-08FR6JHTZX');
     </script>
 
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-            scroll-behavior: smooth;
-        }
-
-        :focus-visible {
-            outline: 2px solid #3b82f6;
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .glass-card {
-            background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .dark .glass-card {
-            background: rgba(30, 41, 59, 0.8);
-        }
-
-        .custom-file-input {
-            position: relative;
-            overflow: hidden;
-            display: block;
-            cursor: pointer;
-        }
-
-        .custom-file-input input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .btn-gradient {
-            background: linear-gradient(to right, #1e40af, #3b82f6);
-            transition: all 0.3s ease;
-        }
-
-        .btn-gradient:hover {
-            background: linear-gradient(to right, #3b82f6, #1e40af);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
-        }
-
-        .grow-on-hover {
-            transition: all 0.3s ease;
-        }
-
-        .grow-on-hover:hover {
-            transform: scale(1.03);
-        }
-
-        /* Skip offscreen layout/paint work on below-the-fold sections */
-        .cv-section {
-            content-visibility: auto;
-            contain-intrinsic-size: 0 600px;
-        }
-
-        /* Drag-and-drop active state for the upload area */
-        #dropzone {
-            transition: border-color 0.2s ease, background-color 0.2s ease;
-        }
-
-        #dropzone.is-dragover {
-            border-color: #3b82f6;
-            background-color: rgba(59, 130, 246, 0.08);
-        }
-    </style>
+    <link href="/css/custom.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white scroll-mt-20 scroll-smooth">
@@ -708,203 +622,7 @@ $ openssl rsa -in key.pem -out private.key
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const shareButton = document.getElementById('shareButton');
-
-        // Check if Web Share API is supported
-        if (navigator.share) {
-            shareButton.addEventListener('click', async () => {
-                try {
-                    await navigator.share({
-                        title: '🔒 PFX to PEM Converter - Free Secure Tool',
-                        text: 'I found this amazing tool that converts PFX to PEM files instantly, right in your browser! No data is sent to servers - completely secure and private. Perfect for setting up SSL on Apache, Nginx, or any web server. Save hours of command-line work! ✨',
-                        url: window.location.href
-                    });
-                    console.log('Successfully shared');
-                } catch (error) {
-                    console.error('Error sharing:', error);
-                }
-            });
-        } else {
-            // Fallback for browsers that don't support the Web Share API
-            shareButton.addEventListener('click', () => {
-                // Create a temporary input to copy the URL
-                const input = document.createElement('input');
-                input.value = window.location.href;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-
-                // Change button text temporarily to show feedback
-                const originalText = shareButton.innerHTML;
-                shareButton.innerHTML = '<i class="fas fa-check mr-2"></i> URL Copied!';
-
-                setTimeout(() => {
-                    shareButton.innerHTML = originalText;
-                }, 2000);
-            });
-        }
-    });
-
-    // Mobile menu toggle
-    document.getElementById('mobile-menu-button').addEventListener('click', function() {
-        const mobileMenu = document.getElementById('mobile-menu');
-        const isHidden = mobileMenu.classList.toggle('hidden');
-        this.setAttribute('aria-expanded', String(!isHidden));
-    });
-
-    // Password visibility toggle
-    document.getElementById('toggle-password').addEventListener('click', function() {
-        const passwordInput = document.getElementById('password');
-        const icon = this.querySelector('i');
-
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-            this.setAttribute('aria-pressed', 'true');
-            this.setAttribute('aria-label', 'Hide password');
-        } else {
-            passwordInput.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-            this.setAttribute('aria-pressed', 'false');
-            this.setAttribute('aria-label', 'Show password');
-        }
-    });
-
-    // File upload: drag-and-drop, client-side validation, and a removable file chip
-    (function () {
-        const MAX_BYTES = 10 * 1024 * 1024; // keep in sync with process.php
-        const fileInput = document.getElementById('file');
-        const dropzone = document.getElementById('dropzone');
-        const chip = document.getElementById('file-name');
-        const errorEl = document.getElementById('file-error');
-
-        const formatSize = (bytes) => {
-            if (bytes < 1024) return bytes + ' B';
-            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-        };
-
-        const showError = (msg) => {
-            errorEl.textContent = msg;
-            errorEl.classList.remove('hidden');
-        };
-        const clearError = () => {
-            errorEl.textContent = '';
-            errorEl.classList.add('hidden');
-        };
-
-        const clearFile = () => {
-            fileInput.value = '';
-            chip.innerHTML = '';
-        };
-
-        const renderChip = (file) => {
-            chip.innerHTML = '';
-            const wrap = document.createElement('div');
-            wrap.className = 'py-2 px-3 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg flex items-center justify-between gap-3';
-            const label = document.createElement('span');
-            label.className = 'flex items-center min-w-0';
-            label.innerHTML = '<i class="fas fa-file-alt mr-2" aria-hidden="true"></i>';
-            const name = document.createElement('span');
-            name.className = 'truncate';
-            name.textContent = `${file.name} (${formatSize(file.size)})`;
-            label.appendChild(name);
-            const remove = document.createElement('button');
-            remove.type = 'button';
-            remove.className = 'shrink-0 text-blue-700 dark:text-blue-300 hover:text-red-600 focus:outline-none';
-            remove.setAttribute('aria-label', 'Remove selected file');
-            remove.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
-            remove.addEventListener('click', () => { clearFile(); clearError(); });
-            wrap.appendChild(label);
-            wrap.appendChild(remove);
-            chip.appendChild(wrap);
-        };
-
-        const validate = (file) => {
-            if (!file.name.toLowerCase().endsWith('.pfx')) {
-                return 'Only .pfx files are allowed.';
-            }
-            if (file.size > MAX_BYTES) {
-                return `That file is ${formatSize(file.size)}. The maximum size is 10MB.`;
-            }
-            return null;
-        };
-
-        const handleFile = (file) => {
-            if (!file) return;
-            const problem = validate(file);
-            if (problem) {
-                showError(problem);
-                clearFile();
-                return;
-            }
-            clearError();
-            renderChip(file);
-        };
-
-        fileInput.addEventListener('change', function () {
-            handleFile(this.files[0]);
-        });
-
-        ['dragenter', 'dragover'].forEach(evt =>
-            dropzone.addEventListener(evt, (e) => {
-                e.preventDefault();
-                dropzone.classList.add('is-dragover');
-            })
-        );
-        ['dragleave', 'dragend'].forEach(evt =>
-            dropzone.addEventListener(evt, () => dropzone.classList.remove('is-dragover'))
-        );
-        dropzone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropzone.classList.remove('is-dragover');
-            const dropped = e.dataTransfer.files && e.dataTransfer.files[0];
-            if (!dropped) return;
-            // Assign the dropped file to the input so it submits with the form
-            const dt = new DataTransfer();
-            dt.items.add(dropped);
-            fileInput.files = dt.files;
-            handleFile(dropped);
-        });
-    })();
-
-    // FAQ accordion with ARIA state
-    document.querySelectorAll('.faq-toggle').forEach((toggle, i) => {
-        const content = toggle.nextElementSibling;
-        const panelId = `faq-panel-${i}`;
-        content.id = panelId;
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.setAttribute('aria-controls', panelId);
-
-        toggle.addEventListener('click', function () {
-            const icon = this.querySelector('i');
-            const isOpen = !!content.style.maxHeight;
-
-            if (isOpen) {
-                content.style.maxHeight = null;
-                icon.classList.remove('rotate-180');
-                this.setAttribute('aria-expanded', 'false');
-            } else {
-                content.style.maxHeight = content.scrollHeight + 'px';
-                icon.classList.add('rotate-180');
-                this.setAttribute('aria-expanded', 'true');
-            }
-        });
-    });
-
-    // Service Worker Registration
-    window.onload = () => {
-        'use strict';
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
-        }
-    }
-</script>
+<script src="/js/app.js" defer></script>
 </body>
 </html>
 
