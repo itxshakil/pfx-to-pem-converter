@@ -1,3 +1,9 @@
 node_modules
 .idea
 .vscode
+.DS_Store
+**/.DS_Store
+/uploads/*
+/generated/*
+!/uploads/.htaccess
+!/generated/.htaccess

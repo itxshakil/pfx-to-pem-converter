@@ -92,11 +92,6 @@ if (empty($_SESSION['csrf_token'])) {
     <link href="/css/app.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="manifest" href="manifest.json" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-08FR6JHTZX"></script>
@@ -110,8 +105,23 @@ if (empty($_SESSION['csrf_token'])) {
 
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             scroll-behavior: smooth;
+        }
+
+        :focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
 
         .gradient-bg {
@@ -125,10 +135,10 @@ if (empty($_SESSION['csrf_token'])) {
         }
 
         .glass-card {
-            background: darkslateblue;
-            backdrop-filter: blur(10px);
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.06);
             border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
         }
 
@@ -169,33 +179,6 @@ if (empty($_SESSION['csrf_token'])) {
             box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
         }
 
-        .animated-bg {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .animated-bg::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 25%, transparent 25%, transparent 50%, rgba(59, 130, 246, 0.1) 50%, rgba(37, 99, 235, 0.1) 75%, transparent 75%, transparent);
-            background-size: 20px 20px;
-            z-index: -1;
-            animation: bg-animation 15s linear infinite;
-        }
-
-        @keyframes bg-animation {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         .grow-on-hover {
             transition: all 0.3s ease;
         }
@@ -208,13 +191,13 @@ if (empty($_SESSION['csrf_token'])) {
 
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white scroll-mt-20 scroll-smooth">
 
-<div class="animated-bg min-h-screen flex flex-col">
+<div class="min-h-screen flex flex-col">
     <!-- Navigation -->
     <header class="gradient-bg text-white py-4 sticky top-0 z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <a href="/" class="flex items-center space-x-2">
                 <i class="fas fa-key text-2xl text-yellow-300"></i>
-                <a href="/" class="text-2xl font-bold">PFX to PEM Converter</a>
+                <span class="text-2xl font-bold">PFX to PEM Converter</span>
             </a>
             <nav class="hidden md:flex items-center space-x-6">
                 <a href="#features" class="text-white hover:text-yellow-200 transition duration-200 flex items-center">
@@ -227,8 +210,8 @@ if (empty($_SESSION['csrf_token'])) {
                     <i class="fas fa-question-circle mr-2"></i>FAQ
                 </a>
             </nav>
-            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
-                <i class="fas fa-bars text-xl"></i>
+            <button id="mobile-menu-button" type="button" class="md:hidden text-white focus:outline-none" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+                <i class="fas fa-bars text-xl" aria-hidden="true"></i>
             </button>
         </div>
 
@@ -258,7 +241,7 @@ if (empty($_SESSION['csrf_token'])) {
                     <use href="#path1" fill="none" stroke="white" stroke-width="100" stroke-opacity="0.1" />
                 </svg>
             </div>
-            <div class="z-10 px-8 md:px-16 py-6 md:w-2/3">
+            <div class="z-10 px-8 md:px-16 py-6 md:w-1/2">
                 <h2 class="text-4xl font-bold text-white mb-4">Secure PFX to PEM Conversion</h2>
                 <p class="text-white text-lg opacity-90 mb-8">
                     Extract private keys and certificates from your PFX files with our secure, fast, and easy-to-use tool.
@@ -272,7 +255,7 @@ if (empty($_SESSION['csrf_token'])) {
                     </a>
                 </div>
             </div>
-            <div class="hidden md:block md:w-2/3 p-4">
+            <div class="hidden md:block md:w-1/2 p-4">
                 <div class="relative">
                     <div class="absolute inset-0 bg-blue-600 rounded-full opacity-20 blur-3xl"></div>
                     <div class="relative glass-effect p-6 rounded-xl">
@@ -348,8 +331,8 @@ $ openssl rsa -in key.pem -out private.key
                             <input id="password" type="password" name="password"
                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
                                    >
-                            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 focus:outline-none">
-                                <i class="fas fa-eye"></i>
+                            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 focus:outline-none" aria-label="Show password" aria-pressed="false">
+                                <i class="fas fa-eye" aria-hidden="true"></i>
                             </button>
                         </div>
                         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
@@ -371,8 +354,8 @@ $ openssl rsa -in key.pem -out private.key
                 <div class="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mb-4">
                     <i class="fas fa-shield-alt text-2xl text-white"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">100% Secure</h3>
-                <p class="text-gray-600 dark:text-gray-300">Your files are processed locally and never stored on our servers.</p>
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Private by Design</h3>
+                <p class="text-gray-600 dark:text-gray-300">Your file is processed over a secure connection and permanently deleted the moment your download is ready — never stored.</p>
             </div>
             <div class="glass-card p-6 flex flex-col items-center text-center">
                 <div class="w-16 h-16 rounded-full gradient-bg flex items-center justify-center mb-4">
@@ -405,7 +388,7 @@ $ openssl rsa -in key.pem -out private.key
                         </div>
                         <div>
                             <h3 class="text-xl font-semibold text-gray-800 dark:text-white">Secure Processing</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mt-2">All file processing happens in your browser. Your sensitive data never leaves your device.</p>
+                            <p class="text-gray-600 dark:text-gray-300 mt-2">Your file is sent over an encrypted connection, processed in an isolated temporary space, and deleted immediately after conversion. We never store your file or password.</p>
                         </div>
                     </div>
                 </div>
@@ -449,39 +432,6 @@ $ openssl rsa -in key.pem -out private.key
         </section>
 
 
-        <!-- 5-Star Rating Section -->
-        <section id="reviews" class="mx-auto max-w-4xl mb-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg scroll-mt-20">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">User Reviews</h3>
-                <div class="flex items-center">
-                    <span class="text-yellow-400 text-2xl">★★★★</span>
-                    <span class="text-yellow-400 text-2xl">★</span>
-                    <span class="text-gray-600 dark:text-gray-400 ml-2">(100 Reviews)</span>
-                </div>
-            </div>
-
-            <div class="space-y-6">
-                <div class="border-l-4 border-blue-500 pl-4 py-2">
-                    <p class="text-gray-600 dark:text-gray-300 italic">"This tool saved me so much time! It effortlessly converted my PFX file to PEM format for my Nginx server. Highly recommended!"</p>
-                    <div class="mt-2 flex items-center">
-                        <span class="text-yellow-400">★★★★★</span>
-                        <span class="ml-2 text-gray-700 dark:text-gray-300 font-medium">John D.</span>
-                        <span class="ml-2 text-gray-500 dark:text-gray-400 text-sm">System Administrator</span>
-                    </div>
-                </div>
-
-                <div class="border-l-4 border-blue-500 pl-4 py-2">
-                    <p class="text-gray-600 dark:text-gray-300 italic">"Great tool! It worked seamlessly to convert my PFX to PEM files for our production servers. The process was simple and straightforward."</p>
-                    <div class="mt-2 flex items-center">
-                        <span class="text-yellow-400">★★★★</span>
-                        <span class="text-gray-400">★</span>
-                        <span class="ml-2 text-gray-700 dark:text-gray-300 font-medium">Sarah M.</span>
-                        <span class="ml-2 text-gray-500 dark:text-gray-400 text-sm">DevOps Engineer</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- How It Works Section -->
         <section id="how-it-works" class="mx-auto max-w-4xl mb-16 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg scroll-mt-20">
             <div class="flex items-center mb-8">
@@ -498,7 +448,7 @@ $ openssl rsa -in key.pem -out private.key
                     </div>
                     <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">1. Upload Your File</h4>
                     <p class="text-gray-600 dark:text-gray-300">
-                        Upload your .pfx file through our secure form. Your file stays on your device.
+                        Upload your .pfx file through our secure form. It is processed in an isolated temporary space and deleted right after.
                     </p>
                 </div>
 
@@ -603,9 +553,8 @@ $ openssl rsa -in key.pem -out private.key
                     <div class="faq-content mt-4 text-gray-600 dark:text-gray-300">
                         <p>After conversion, you'll receive a ZIP file containing:</p>
                         <ul class="list-disc list-inside mt-2 ml-4 space-y-1">
-                            <li>certificate.pem - Your SSL/TLS certificate</li>
-                            <li>private.key - Your unencrypted private key</li>
-                            <li>fullchain.pem - The full certificate chain (if available in the PFX)</li>
+                            <li>cert.pem - Your SSL/TLS certificate in PEM format</li>
+                            <li>private.pem - Your unencrypted private key in PEM format</li>
                         </ul>
                     </div>
                 </div>
@@ -723,8 +672,8 @@ $ openssl rsa -in key.pem -out private.key
         </div>
     </footer>
     <div class="fixed bottom-0 end-0 p-4">
-        <button id="shareButton" class="px-6 py-3 bg-white text-blue-700 rounded-full font-bold hover:bg-yellow-100 transition duration-300 shadow-lg flex items-center">
-            <i class="fas fa-share mr-2"></i> Share
+        <button id="shareButton" type="button" aria-label="Share this tool" class="px-6 py-3 bg-white text-blue-700 rounded-full font-bold hover:bg-yellow-100 transition duration-300 shadow-lg flex items-center">
+            <i class="fas fa-share mr-2" aria-hidden="true"></i> Share
         </button>
     </div>
 </div>
@@ -772,7 +721,8 @@ $ openssl rsa -in key.pem -out private.key
     // Mobile menu toggle
     document.getElementById('mobile-menu-button').addEventListener('click', function() {
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenu.classList.toggle('hidden');
+        const isHidden = mobileMenu.classList.toggle('hidden');
+        this.setAttribute('aria-expanded', String(!isHidden));
     });
 
     // Password visibility toggle
@@ -784,10 +734,14 @@ $ openssl rsa -in key.pem -out private.key
             passwordInput.type = 'text';
             icon.classList.remove('fa-eye');
             icon.classList.add('fa-eye-slash');
+            this.setAttribute('aria-pressed', 'true');
+            this.setAttribute('aria-label', 'Hide password');
         } else {
             passwordInput.type = 'password';
             icon.classList.remove('fa-eye-slash');
             icon.classList.add('fa-eye');
+            this.setAttribute('aria-pressed', 'false');
+            this.setAttribute('aria-label', 'Show password');
         }
     });
 
