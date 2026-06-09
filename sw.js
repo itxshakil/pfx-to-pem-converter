@@ -1,9 +1,13 @@
 const DEBUG = true;
 
-const APP_CACHE = 'v-0.2.1';
+const APP_CACHE = 'v-0.3.0';
+const OFFLINE_URL = '/offline.html';
 const STATIC_ASSETS = [
     '/css/app.css',
+    '/css/custom.css',
+    '/js/app.js',
     '/manifest.json',
+    OFFLINE_URL,
 ];
 
 const BLOG_CACHE_MAX_AGE = 7 * 24 * 60 * 60; // seconds in 1 week (7 days)
@@ -116,14 +120,35 @@ const handleAssetRequest = async (request) => {
     }
 };
 
+// Navigation requests: network-first so users always get fresh server-rendered
+// HTML, but fall back to the cached page and finally the offline page when the
+// network is unavailable.
+const handleNavigationRequest = async (request) => {
+    try {
+        return await fetch(request);
+    } catch (error) {
+        log('Navigation offline, serving fallback', request.url);
+        const cache = await caches.open(APP_CACHE);
+        return (await cache.match(request)) || (await cache.match(OFFLINE_URL));
+    }
+};
+
 self.addEventListener('fetch', event => {
     const { request } = event;
 
-    if (STATIC_ASSETS.includes(request.url)) {
+    // Only handle same-origin GET requests; let everything else hit the network
+    // untouched (POST conversions, cross-origin CDN/analytics, etc.).
+    if (request.method !== 'GET') return;
+
+    const url = new URL(request.url);
+    if (url.origin !== self.location.origin) return;
+
+    if (request.mode === 'navigate') {
+        event.respondWith(handleNavigationRequest(request));
+    } else if (STATIC_ASSETS.includes(url.pathname)) {
         event.respondWith(handleAssetRequest(request));
-    } else if (request.url.match(/^\/blogs\//)) {
+    } else if (url.pathname.startsWith('/blogs/')) {
         event.respondWith(cacheRequest(APP_CACHE, request, 50, BLOG_CACHE_MAX_AGE));
-    } else {
-        event.respondWith(fetch(request));
     }
+    // Other GETs fall through to the browser's default network handling.
 });
