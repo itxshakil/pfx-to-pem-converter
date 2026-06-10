@@ -58,13 +58,13 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 
         <section>
             <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4 flex items-center">
-                    <i class="fas fa-newspaper text-blue-600 dark:text-blue-400 mr-3"></i>
+                    <svg class="icon text-blue-600 dark:text-blue-400 mr-3" aria-hidden="true"><use href="#i-newspaper"/></svg>
                     Related Articles
                 </h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <a href="/blogs/extract-ssl-certificate-from-pfx/" class="glass-card p-6 hover:shadow-xl transition duration-300">
                     <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
-                        <i class="fas fa-star text-4xl text-green-500 dark:text-green-400"></i>
+                        <svg class="icon text-4xl text-green-500 dark:text-green-400" aria-hidden="true"><use href="#i-star"/></svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
                         How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease
@@ -74,13 +74,13 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                     </p>
                     <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
                         Read more
-                        <i class="fas fa-arrow-right ml-2"></i>
+                        <svg class="icon ml-2" aria-hidden="true"><use href="#i-arrow-right"/></svg>
                     </div>
                 </a>
 
                 <a href="/blogs/ssl-tls-key-difference/" class="glass-card p-6 hover:shadow-xl transition duration-300">
                     <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
-                        <i class="fas fa-user text-4xl text-green-500 dark:text-green-400"></i>
+                        <svg class="icon text-4xl text-green-500 dark:text-green-400" aria-hidden="true"><use href="#i-user"/></svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
                         SSL vs TLS: Key Differences and Why They Matter
@@ -90,7 +90,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                     </p>
                     <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
                         Read more
-                        <i class="fas fa-arrow-right ml-2"></i>
+                        <svg class="icon ml-2" aria-hidden="true"><use href="#i-arrow-right"/></svg>
                     </div>
                 </a>
             </div>

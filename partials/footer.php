@@ -5,7 +5,7 @@
                 <div class="col-span-2 md:col-span-1">
                     <a href="/" class="flex items-center gap-2.5 mb-3">
                         <span class="icon-tile w-8 h-8 gradient-bg" style="color:#fff;">
-                            <i class="fas fa-shield-halved text-sm" aria-hidden="true"></i>
+                            <svg class="icon text-sm" aria-hidden="true"><use href="#i-shield-halved"/></svg>
                         </span>
                         <span class="font-bold tracking-tight text-body">PFX&nbsp;to&nbsp;PEM</span>
                     </a>
@@ -34,13 +34,13 @@
                     <h4 class="font-semibold text-body mb-3">Connect</h4>
                     <div class="flex gap-5 text-lg">
                         <a href="https://www.x.com/itxshakil/" aria-label="X (Twitter)" class="link-muted">
-                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                            <svg class="icon" aria-hidden="true"><use href="#i-twitter"/></svg>
                         </a>
                         <a href="https://www.github.com/itxshakil/" aria-label="GitHub" class="link-muted">
-                            <i class="fab fa-github" aria-hidden="true"></i>
+                            <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
                         </a>
                         <a href="https://www.linkedin.com/in/itxshakil/" aria-label="LinkedIn" class="link-muted">
-                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                            <svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg>
                         </a>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
     </footer>
     <div class="fixed bottom-0 end-0 p-4">
         <button id="shareButton" type="button" aria-label="Share this tool" class="inline-flex items-center px-4 py-2.5 rounded-full btn-secondary text-sm font-medium shadow-lg">
-            <i class="fas fa-share mr-2" aria-hidden="true"></i> Share
+            <svg class="icon mr-2" aria-hidden="true"><use href="#i-share"/></svg> Share
         </button>
     </div>
 </div>

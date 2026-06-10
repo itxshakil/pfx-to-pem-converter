@@ -4,7 +4,7 @@
         <div class="container mx-auto max-w-6xl px-4 h-16 flex justify-between items-center">
             <a href="/" class="flex items-center gap-2.5">
                 <span class="icon-tile w-9 h-9 gradient-bg" style="color:#fff;">
-                    <i class="fas fa-shield-halved text-base" aria-hidden="true"></i>
+                    <svg class="icon text-base" aria-hidden="true"><use href="#i-shield-halved"/></svg>
                 </span>
                 <span class="text-lg font-bold tracking-tight text-body">PFX&nbsp;to&nbsp;PEM</span>
             </a>
@@ -18,7 +18,7 @@
             <div class="hidden md:flex items-center gap-4">
                 <a href="https://github.com/itxshakil/pfx-to-pem-converter" target="_blank" rel="noopener"
                    class="inline-flex items-center gap-2 text-sm font-medium link-muted">
-                    <i class="fab fa-github text-base" aria-hidden="true"></i> GitHub
+                    <svg class="icon text-base" aria-hidden="true"><use href="#i-github"/></svg> GitHub
                 </a>
                 <a href="/#converter" class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold btn-gradient">
                     Convert a file
@@ -27,7 +27,7 @@
 
             <button id="mobile-menu-button" type="button" class="md:hidden focus:outline-none text-body"
                     aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-                <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+                <svg class="icon text-lg" aria-hidden="true"><use href="#i-bars"/></svg>
             </button>
         </div>
 

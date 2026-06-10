@@ -126,7 +126,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
         <div class="container mx-auto px-4 max-w-4xl">
             <div class="text-center mb-10">
                 <span class="icon-tile w-14 h-14 mx-auto mb-4" style="background: var(--success-soft); color: var(--success);">
-                    <i class="fas fa-circle-check text-2xl" aria-hidden="true"></i>
+                    <svg class="icon text-2xl" aria-hidden="true"><use href="#i-circle-check"/></svg>
                 </span>
                 <h1 class="text-3xl font-bold text-body mb-2">Conversion complete</h1>
                 <p class="text-muted max-w-xl mx-auto">
@@ -138,21 +138,21 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
             <div class="surface-card p-6 mb-6">
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
                     <h2 class="text-lg font-semibold text-body flex items-center gap-2">
-                        <i class="fas fa-key text-brand" aria-hidden="true"></i>private.pem
+                        <svg class="icon text-brand" aria-hidden="true"><use href="#i-key"/></svg>private.pem
                     </h2>
                     <div class="flex flex-wrap gap-3">
                         <button type="button" data-copy="pem-key"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-gradient font-medium text-sm">
-                            <i class="fas fa-copy" aria-hidden="true"></i><span class="copy-label">Copy</span>
+                            <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span class="copy-label">Copy</span>
                         </button>
                         <button type="button" data-download="pem-key" data-filename="private.pem"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium text-sm">
-                            <i class="fas fa-download" aria-hidden="true"></i>Download
+                            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download
                         </button>
                     </div>
                 </div>
                 <p class="text-sm text-faint mb-3 flex items-center gap-1.5">
-                    <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+                    <svg class="icon" aria-hidden="true"><use href="#i-triangle-exclamation"/></svg>
                     Keep your private key secret. Store it somewhere safe and never share it.
                 </p>
                 <pre id="pem-key" class="pem-block"><?= htmlspecialchars($privateKeyPem, ENT_QUOTES) ?></pre>
@@ -161,16 +161,16 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
             <div class="surface-card p-6 mb-6">
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
                     <h2 class="text-lg font-semibold text-body flex items-center gap-2">
-                        <i class="fas fa-certificate text-brand" aria-hidden="true"></i>cert.pem
+                        <svg class="icon text-brand" aria-hidden="true"><use href="#i-certificate"/></svg>cert.pem
                     </h2>
                     <div class="flex flex-wrap gap-3">
                         <button type="button" data-copy="pem-cert"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-gradient font-medium text-sm">
-                            <i class="fas fa-copy" aria-hidden="true"></i><span class="copy-label">Copy</span>
+                            <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span class="copy-label">Copy</span>
                         </button>
                         <button type="button" data-download="pem-cert" data-filename="cert.pem"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium text-sm">
-                            <i class="fas fa-download" aria-hidden="true"></i>Download
+                            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download
                         </button>
                     </div>
                 </div>
@@ -181,11 +181,11 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 <button type="button" id="download-zip"
                         data-zip="<?= $zipBase64 ?>" data-filename="<?= htmlspecialchars($zipFileName, ENT_QUOTES) ?>"
                         class="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-gradient font-semibold">
-                    <i class="fas fa-file-zipper" aria-hidden="true"></i>Download both as .zip
+                    <svg class="icon" aria-hidden="true"><use href="#i-file-zipper"/></svg>Download both as .zip
                 </button>
                 <p class="mt-6">
                     <a href="/" class="inline-flex items-center gap-2 text-brand font-medium">
-                        <i class="fas fa-arrow-left" aria-hidden="true"></i>Convert another file
+                        <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Convert another file
                     </a>
                 </p>
             </div>

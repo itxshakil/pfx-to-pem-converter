@@ -29,8 +29,8 @@ if (!headers_sent()) {
         "Content-Security-Policy: " .
         "default-src 'self'; " .
         "script-src 'self' 'nonce-$nonce' https://www.googletagmanager.com https://www.google-analytics.com; " .
-        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; " .
-        "font-src 'self' https://cdnjs.cloudflare.com; " .
+        "style-src 'self' 'unsafe-inline'; " .
+        "font-src 'self'; " .
         "img-src 'self' data: https://www.google-analytics.com https://ui-avatars.com; " .
         "connect-src 'self' https://www.google-analytics.com; " .
         "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
@@ -103,7 +103,6 @@ $pBodyClass  = $page['bodyClass']     ?? 'scroll-mt-20 scroll-smooth';
 
     <!-- Tailwind CSS -->
     <link href="/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="/css/custom.css" rel="stylesheet">
 
     <link rel="manifest" href="/manifest.json" />
@@ -139,5 +138,7 @@ $pBodyClass  = $page['bodyClass']     ?? 'scroll-mt-20 scroll-smooth';
 </head>
 
 <body class="<?= $e($pBodyClass) ?>">
+
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/icons.php'; ?>
 
 <div class="min-h-[100svh] flex flex-col">

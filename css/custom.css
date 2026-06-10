@@ -78,6 +78,15 @@
 .nav-link { color: var(--text-secondary); transition: color 0.2s ease; }
 .nav-link:hover { color: var(--text); }
 
+/* ---- Inline SVG icons (sprite via <use href="#i-NAME">) ------------- */
+.icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     -webkit-font-smoothing: antialiased;

@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Change button text temporarily to show feedback
             const originalText = shareButton.innerHTML;
-            shareButton.innerHTML = '<i class="fas fa-check mr-2"></i> URL Copied!';
+            shareButton.innerHTML = '<svg class="icon mr-2" aria-hidden="true"><use href="#i-check"/></svg> URL Copied!';
 
             setTimeout(() => {
                 shareButton.innerHTML = originalText;
@@ -54,18 +54,16 @@ const togglePassword = document.getElementById('toggle-password');
 if (togglePassword) {
     togglePassword.addEventListener('click', function () {
         const passwordInput = document.getElementById('password');
-        const icon = this.querySelector('i');
+        const use = this.querySelector('use');
 
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
+            if (use) use.setAttribute('href', '#i-eye-slash');
             this.setAttribute('aria-pressed', 'true');
             this.setAttribute('aria-label', 'Hide password');
         } else {
             passwordInput.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
+            if (use) use.setAttribute('href', '#i-eye');
             this.setAttribute('aria-pressed', 'false');
             this.setAttribute('aria-label', 'Show password');
         }
@@ -109,7 +107,7 @@ if (togglePassword) {
         wrap.className = 'py-2 px-3 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg flex items-center justify-between gap-3';
         const label = document.createElement('span');
         label.className = 'flex items-center min-w-0';
-        label.innerHTML = '<i class="fas fa-file-alt mr-2" aria-hidden="true"></i>';
+        label.innerHTML = '<svg class="icon mr-2" aria-hidden="true"><use href="#i-file-alt"/></svg>';
         const name = document.createElement('span');
         name.className = 'truncate';
         name.textContent = `${file.name} (${formatSize(file.size)})`;
@@ -118,7 +116,7 @@ if (togglePassword) {
         remove.type = 'button';
         remove.className = 'shrink-0 text-blue-700 dark:text-blue-300 hover:text-red-600 focus:outline-none';
         remove.setAttribute('aria-label', 'Remove selected file');
-        remove.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
+        remove.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-times"/></svg>';
         remove.addEventListener('click', () => { clearFile(); clearError(); });
         wrap.appendChild(label);
         wrap.appendChild(remove);
@@ -182,7 +180,7 @@ document.querySelectorAll('.faq-toggle').forEach((toggle, i) => {
     toggle.setAttribute('aria-controls', panelId);
 
     toggle.addEventListener('click', function () {
-        const icon = this.querySelector('i');
+        const icon = this.querySelector('svg, i');
         const isOpen = !!content.style.maxHeight;
 
         if (isOpen) {
