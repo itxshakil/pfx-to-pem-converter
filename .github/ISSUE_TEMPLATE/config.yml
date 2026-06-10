@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/itxshakil/pfx-to-pem-converter/security/advisories/new
+    about: Please disclose security issues privately, not as public issues.
+  - name: Try the live tool
+    url: https://pfx-to-pem-converter.shakiltech.com
+    about: Use the hosted converter.
