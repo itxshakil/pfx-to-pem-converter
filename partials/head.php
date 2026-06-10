@@ -107,14 +107,34 @@ $pBodyClass  = $page['bodyClass']     ?? 'scroll-mt-20 scroll-smooth';
     <link href="/css/custom.css" rel="stylesheet">
 
     <link rel="manifest" href="/manifest.json" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-08FR6JHTZX"></script>
+    <!-- Google tag (gtag.js) — library load deferred until idle/interaction so
+         analytics never blocks first paint. gtag() calls queue into dataLayer
+         and are processed once the library loads. -->
     <script nonce="<?= $nonce ?>">
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-08FR6JHTZX');
+
+        (function () {
+            var loaded = false;
+            function loadGtag() {
+                if (loaded) return;
+                loaded = true;
+                var s = document.createElement('script');
+                s.async = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-08FR6JHTZX';
+                document.head.appendChild(s);
+            }
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(loadGtag, { timeout: 5000 });
+            } else {
+                setTimeout(loadGtag, 3000);
+            }
+            ['scroll', 'keydown', 'pointerdown', 'touchstart'].forEach(function (evt) {
+                window.addEventListener(evt, loadGtag, { once: true, passive: true });
+            });
+        })();
     </script>
 </head>
 

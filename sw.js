@@ -1,6 +1,6 @@
-const DEBUG = true;
+const DEBUG = false;
 
-const APP_CACHE = 'v-0.3.0';
+const APP_CACHE = 'v-0.4.0';
 const OFFLINE_URL = '/offline.html';
 const STATIC_ASSETS = [
     '/css/app.css',
