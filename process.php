@@ -86,11 +86,21 @@ function pfxReadLegacyFallback($pfxPath, $password) {
     }
 
     if (!preg_match('/-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----.*?-----END [A-Z0-9 ]*PRIVATE KEY-----/s', $stdout, $keyMatch)
-        || !preg_match('/-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/s', $stdout, $certMatch)) {
+        || !preg_match_all('/-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/s', $stdout, $certMatches)) {
         return null;
     }
 
-    return ['pkey' => $keyMatch[0] . "\n", 'cert' => $certMatch[0] . "\n"];
+    // The first certificate is the leaf; any remaining ones are the CA chain,
+    // mirroring how openssl_pkcs12_read() splits 'cert' from 'extracerts'.
+    $certs      = $certMatches[0];
+    $leaf       = array_shift($certs);
+    $extracerts = array_map(static function ($c) { return $c . "\n"; }, $certs);
+
+    return [
+        'pkey'       => $keyMatch[0] . "\n",
+        'cert'       => $leaf . "\n",
+        'extracerts' => $extracerts,
+    ];
 }
 
 function sanitizeFilename($filename) {
@@ -151,6 +161,7 @@ register_shutdown_function(function () use ($workDir) {
 $pfxFilePath    = $workDir . '/source.pfx';
 $privateKeyFile = $workDir . '/private.pem';
 $certFile       = $workDir . '/cert.pem';
+$caChainFile    = $workDir . '/ca-chain.pem';
 
 if (!move_uploaded_file($uploadedFile['tmp_name'], $pfxFilePath)) {
     redirectWithError('File upload failed. Please try again.');
@@ -176,6 +187,17 @@ if (!openssl_pkcs12_read($pfxContent, $pkcs12, $pfxPassword)) {
 file_put_contents($privateKeyFile, $pkcs12['pkey']);
 file_put_contents($certFile, $pkcs12['cert']);
 
+// Assemble the CA chain (intermediate + root certificates) if the PFX bundled
+// any. Many servers need this for the certificate chain to validate.
+$caChainPem = '';
+if (!empty($pkcs12['extracerts']) && is_array($pkcs12['extracerts'])) {
+    $caChainPem = trim(implode("\n", array_map('trim', $pkcs12['extracerts']))) . "\n";
+}
+$hasCaChain = $caChainPem !== '';
+if ($hasCaChain) {
+    file_put_contents($caChainFile, $caChainPem);
+}
+
 $baseName  = sanitizeFilename($uploadedFile['name']);
 $timestamp = date('Ymd_His');
 $zipFileName = "{$baseName}_cert_{$timestamp}.zip";
@@ -188,6 +210,9 @@ if ($zip->open($zipFilePath, ZipArchive::CREATE) !== true) {
 
 $zip->addFile($privateKeyFile, 'private.pem');
 $zip->addFile($certFile, 'cert.pem');
+if ($hasCaChain) {
+    $zip->addFile($caChainFile, 'ca-chain.pem');
+}
 $zip->close();
 
 // Read the results into memory so the page can offer copy + per-file and ZIP
@@ -268,11 +293,36 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 <pre id="pem-cert" class="pem-block"><?= htmlspecialchars($certPem, ENT_QUOTES) ?></pre>
             </div>
 
+            <?php if ($hasCaChain): ?>
+            <div class="surface-card p-6 mb-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <h2 class="text-lg font-semibold text-body flex items-center gap-2">
+                        <svg class="icon text-brand" aria-hidden="true"><use href="#i-route"/></svg>ca-chain.pem
+                    </h2>
+                    <div class="flex flex-wrap gap-3">
+                        <button type="button" data-copy="pem-ca"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-gradient font-medium text-sm">
+                            <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span class="copy-label">Copy</span>
+                        </button>
+                        <button type="button" data-download="pem-ca" data-filename="ca-chain.pem"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium text-sm">
+                            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download
+                        </button>
+                    </div>
+                </div>
+                <p class="text-sm text-faint mb-3 flex items-center gap-1.5">
+                    <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+                    Intermediate &amp; root certificates. Many servers need this for the chain to validate.
+                </p>
+                <pre id="pem-ca" class="pem-block"><?= htmlspecialchars($caChainPem, ENT_QUOTES) ?></pre>
+            </div>
+            <?php endif; ?>
+
             <div class="text-center">
                 <button type="button" id="download-zip"
                         data-zip="<?= $zipBase64 ?>" data-filename="<?= htmlspecialchars($zipFileName, ENT_QUOTES) ?>"
                         class="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-gradient font-semibold">
-                    <svg class="icon" aria-hidden="true"><use href="#i-file-zipper"/></svg>Download both as .zip
+                    <svg class="icon" aria-hidden="true"><use href="#i-file-zipper"/></svg>Download all as .zip
                 </button>
                 <p class="mt-6">
                     <a href="/" class="inline-flex items-center gap-2 text-brand font-medium">
