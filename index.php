@@ -54,7 +54,7 @@ JSONLD,
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
-    <main class="flex-grow">
+    <main class="grow">
         <!-- Hero + converter (converter-first) -->
         <section class="hero-surface border-b-base">
             <div class="container mx-auto max-w-6xl px-4 py-16 md:py-20 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -129,10 +129,10 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                             <label class="block text-sm font-medium text-body mb-2" for="password">Password</label>
                             <div class="relative">
                                 <input id="password" type="password" name="password" autocomplete="off"
-                                       class="w-full px-4 py-3 rounded-lg bg-surface text-body border-base focus:outline-none"
+                                       class="w-full px-4 py-3 rounded-lg bg-surface text-body border-base focus:outline-hidden"
                                        style="border-color: var(--border-strong);">
                                 <button type="button" id="toggle-password"
-                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-faint focus:outline-none"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-faint focus:outline-hidden"
                                         aria-label="Show password" aria-pressed="false">
                                     <svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>
                                 </button>

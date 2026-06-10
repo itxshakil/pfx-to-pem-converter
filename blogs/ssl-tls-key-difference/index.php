@@ -9,7 +9,7 @@ $page = [
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
-<main class="flex-grow">
+<main class="grow">
     <header class="article-hero">
         <div class="container mx-auto max-w-3xl px-4 py-12 md:py-16">
             <a href="/" class="inline-flex items-center gap-2 text-sm link-muted mb-5">

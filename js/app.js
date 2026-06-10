@@ -114,7 +114,7 @@ if (togglePassword) {
         label.appendChild(name);
         const remove = document.createElement('button');
         remove.type = 'button';
-        remove.className = 'shrink-0 text-blue-700 dark:text-blue-300 hover:text-red-600 focus:outline-none';
+        remove.className = 'shrink-0 text-blue-700 dark:text-blue-300 hover:text-red-600 focus:outline-hidden';
         remove.setAttribute('aria-label', 'Remove selected file');
         remove.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-times"/></svg>';
         remove.addEventListener('click', () => { clearFile(); clearError(); });

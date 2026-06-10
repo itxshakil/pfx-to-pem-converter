@@ -121,7 +121,7 @@ $page = [
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
-<main class="flex-grow">
+<main class="grow">
     <section class="py-14">
         <div class="container mx-auto px-4 max-w-4xl">
             <div class="text-center mb-10">

@@ -25,7 +25,7 @@
                 </a>
             </div>
 
-            <button id="mobile-menu-button" type="button" class="md:hidden focus:outline-none text-body"
+            <button id="mobile-menu-button" type="button" class="md:hidden focus:outline-hidden text-body"
                     aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
                 <svg class="icon text-lg" aria-hidden="true"><use href="#i-bars"/></svg>
             </button>

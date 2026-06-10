@@ -1,6 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Tailwind v4 auto-detects content; these mirror the old `content` globs
+   explicitly so PHP markup and JS class strings are always scanned
+   (paths are relative to this file). */
+@source "../../index.php";
+@source "../../**/*.php";
+@source "../../js/**/*.js";
 
 /* Article Styles */
 article {
