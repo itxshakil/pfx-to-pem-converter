@@ -50,7 +50,7 @@ $pOgTitle    = $page['ogTitle']       ?? $pTitle;
 $pOgDesc     = $page['ogDescription'] ?? $pDesc;
 $pImage      = $page['image']         ?? 'https://ui-avatars.com/api/?name=PFX+to+PEM&background=1e40af&color=ffffff&size=512';
 $pAppleTitle = $page['appleTitle']    ?? 'PFX to PEM Converter';
-$pBodyClass  = $page['bodyClass']     ?? 'bg-gray-50 dark:bg-gray-900 dark:text-white scroll-mt-20 scroll-smooth';
+$pBodyClass  = $page['bodyClass']     ?? 'scroll-mt-20 scroll-smooth';
 ?>
 <!DOCTYPE html>
 <html lang="en">

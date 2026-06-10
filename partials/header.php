@@ -1,38 +1,46 @@
     <!-- Navigation -->
-    <header class="gradient-bg text-white py-4 sticky top-0 z-50">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-2">
-                <i class="fas fa-key text-2xl text-yellow-300"></i>
-                <span class="text-2xl font-bold">PFX to PEM Converter</span>
+    <header class="sticky top-0 z-50 backdrop-blur-md border-b-base"
+            style="background: color-mix(in srgb, var(--surface) 82%, transparent);">
+        <div class="container mx-auto max-w-6xl px-4 h-16 flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2.5">
+                <span class="icon-tile w-9 h-9 gradient-bg" style="color:#fff;">
+                    <i class="fas fa-shield-halved text-base" aria-hidden="true"></i>
+                </span>
+                <span class="text-lg font-bold tracking-tight text-body">PFX&nbsp;to&nbsp;PEM</span>
             </a>
-            <nav class="hidden md:flex items-center space-x-6">
-                <a href="/#features" class="text-white hover:text-yellow-200 transition duration-200 flex items-center">
-                    <i class="fas fa-star mr-2"></i>Features
-                </a>
-                <a href="/#how-it-works" class="text-white hover:text-yellow-200 transition duration-200 flex items-center">
-                    <i class="fas fa-cogs mr-2"></i>How It Works
-                </a>
-                <a href="/#faq" class="text-white hover:text-yellow-200 transition duration-200 flex items-center">
-                    <i class="fas fa-question-circle mr-2"></i>FAQ
-                </a>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="/#features" class="nav-link">Features</a>
+                <a href="/#how-it-works" class="nav-link">How it works</a>
+                <a href="/#faq" class="nav-link">FAQ</a>
             </nav>
-            <button id="mobile-menu-button" type="button" class="md:hidden text-white focus:outline-none" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-                <i class="fas fa-bars text-xl" aria-hidden="true"></i>
+
+            <div class="hidden md:flex items-center gap-4">
+                <a href="https://github.com/itxshakil/pfx-to-pem-converter" target="_blank" rel="noopener"
+                   class="inline-flex items-center gap-2 text-sm font-medium link-muted">
+                    <i class="fab fa-github text-base" aria-hidden="true"></i> GitHub
+                </a>
+                <a href="/#converter" class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold btn-gradient">
+                    Convert a file
+                </a>
+            </div>
+
+            <button id="mobile-menu-button" type="button" class="md:hidden focus:outline-none text-body"
+                    aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+                <i class="fas fa-bars text-lg" aria-hidden="true"></i>
             </button>
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden">
-            <div class="glass-effect px-4 py-2 mx-4 mt-2 rounded-lg">
-                <a href="/#features" class="block py-2 px-4 text-white hover:bg-blue-700 rounded">
-                    <i class="fas fa-star mr-2"></i>Features
+        <div id="mobile-menu" class="hidden md:hidden border-t-base bg-surface">
+            <nav class="container mx-auto max-w-6xl px-4 py-3 text-sm font-medium flex flex-col">
+                <a href="/#features" class="py-2.5 link-muted">Features</a>
+                <a href="/#how-it-works" class="py-2.5 link-muted">How it works</a>
+                <a href="/#faq" class="py-2.5 link-muted">FAQ</a>
+                <a href="https://github.com/itxshakil/pfx-to-pem-converter" target="_blank" rel="noopener" class="py-2.5 link-muted">GitHub</a>
+                <a href="/#converter" class="mt-2 inline-flex items-center justify-center px-4 py-2.5 rounded-lg text-sm font-semibold btn-gradient">
+                    Convert a file
                 </a>
-                <a href="/#how-it-works" class="block py-2 px-4 text-white hover:bg-blue-700 rounded">
-                    <i class="fas fa-cogs mr-2"></i>How It Works
-                </a>
-                <a href="/#faq" class="block py-2 px-4 text-white hover:bg-blue-700 rounded">
-                    <i class="fas fa-question-circle mr-2"></i>FAQ
-                </a>
-            </div>
+            </nav>
         </div>
     </header>

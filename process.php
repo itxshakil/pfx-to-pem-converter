@@ -116,59 +116,61 @@ if (!headers_sent()) {
 $page = [
     'title'       => 'Conversion Complete – PFX to PEM Converter',
     'description' => 'Your PFX file has been converted to PEM format.',
-    'bodyClass'   => 'bg-gray-50 dark:bg-gray-900 dark:text-white',
+    'bodyClass'   => 'scroll-mt-20 scroll-smooth',
 ];
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
 <main class="flex-grow">
-    <section class="py-12">
+    <section class="py-14">
         <div class="container mx-auto px-4 max-w-4xl">
-            <div class="text-center mb-8">
-                <i class="fas fa-circle-check text-5xl text-green-500 mb-4" aria-hidden="true"></i>
-                <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">Conversion complete</h1>
-                <p class="text-gray-600 dark:text-gray-300">
-                    Copy the contents below or download the files. Everything was processed in memory and
+            <div class="text-center mb-10">
+                <span class="icon-tile w-14 h-14 mx-auto mb-4" style="background: var(--success-soft); color: var(--success);">
+                    <i class="fas fa-circle-check text-2xl" aria-hidden="true"></i>
+                </span>
+                <h1 class="text-3xl font-bold text-body mb-2">Conversion complete</h1>
+                <p class="text-muted max-w-xl mx-auto">
+                    Copy the contents below or download the files. Everything was processed in a temporary folder and
                     has already been deleted from the server.
                 </p>
             </div>
 
-            <div class="glass-card p-6 mb-6">
+            <div class="surface-card p-6 mb-6">
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
-                        <i class="fas fa-key text-blue-600 dark:text-blue-400 mr-2" aria-hidden="true"></i>private.pem
+                    <h2 class="text-lg font-semibold text-body flex items-center gap-2">
+                        <i class="fas fa-key text-brand" aria-hidden="true"></i>private.pem
                     </h2>
-                    <div class="flex flex-wrap gap-4">
+                    <div class="flex flex-wrap gap-3">
                         <button type="button" data-copy="pem-key"
-                                class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-200">
-                            <i class="fas fa-copy mr-2" aria-hidden="true"></i><span class="copy-label">Copy</span>
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-gradient font-medium text-sm">
+                            <i class="fas fa-copy" aria-hidden="true"></i><span class="copy-label">Copy</span>
                         </button>
                         <button type="button" data-download="pem-key" data-filename="private.pem"
-                                class="inline-flex items-center px-4 py-2 rounded-lg bg-gray-800 dark:bg-gray-700 text-white font-medium hover:bg-blue-700 transition duration-200">
-                            <i class="fas fa-download mr-2" aria-hidden="true"></i>Download
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium text-sm">
+                            <i class="fas fa-download" aria-hidden="true"></i>Download
                         </button>
                     </div>
                 </div>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                    <i class="fas fa-triangle-exclamation mr-1" aria-hidden="true"></i>
+                <p class="text-sm text-faint mb-3 flex items-center gap-1.5">
+                    <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
                     Keep your private key secret. Store it somewhere safe and never share it.
                 </p>
                 <pre id="pem-key" class="pem-block"><?= htmlspecialchars($privateKeyPem, ENT_QUOTES) ?></pre>
             </div>
 
-            <div class="glass-card p-6 mb-6">
+            <div class="surface-card p-6 mb-6">
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
-                        <i class="fas fa-certificate text-blue-600 dark:text-blue-400 mr-2" aria-hidden="true"></i>cert.pem
+                    <h2 class="text-lg font-semibold text-body flex items-center gap-2">
+                        <i class="fas fa-certificate text-brand" aria-hidden="true"></i>cert.pem
                     </h2>
-                    <div class="flex flex-wrap gap-4">
+                    <div class="flex flex-wrap gap-3">
                         <button type="button" data-copy="pem-cert"
-                                class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-200">
-                            <i class="fas fa-copy mr-2" aria-hidden="true"></i><span class="copy-label">Copy</span>
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-gradient font-medium text-sm">
+                            <i class="fas fa-copy" aria-hidden="true"></i><span class="copy-label">Copy</span>
                         </button>
                         <button type="button" data-download="pem-cert" data-filename="cert.pem"
-                                class="inline-flex items-center px-4 py-2 rounded-lg bg-gray-800 dark:bg-gray-700 text-white font-medium hover:bg-blue-700 transition duration-200">
-                            <i class="fas fa-download mr-2" aria-hidden="true"></i>Download
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium text-sm">
+                            <i class="fas fa-download" aria-hidden="true"></i>Download
                         </button>
                     </div>
                 </div>
@@ -178,12 +180,12 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
             <div class="text-center">
                 <button type="button" id="download-zip"
                         data-zip="<?= $zipBase64 ?>" data-filename="<?= htmlspecialchars($zipFileName, ENT_QUOTES) ?>"
-                        class="inline-flex items-center px-6 py-3 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition duration-200 shadow-lg">
-                    <i class="fas fa-file-zipper mr-2" aria-hidden="true"></i>Download both as .zip
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-gradient font-semibold">
+                    <i class="fas fa-file-zipper" aria-hidden="true"></i>Download both as .zip
                 </button>
                 <p class="mt-6">
-                    <a href="/" class="text-blue-600 dark:text-blue-400 font-medium">
-                        <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>Convert another file
+                    <a href="/" class="inline-flex items-center gap-2 text-brand font-medium">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>Convert another file
                     </a>
                 </p>
             </div>

@@ -1,60 +1,59 @@
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-                <div class="flex items-center mb-6 md:mb-0">
-                    <i class="fas fa-key text-2xl text-yellow-400 mr-3"></i>
-                    <span class="text-2xl font-bold">PFX to PEM Converter</span>
+    <footer class="mt-24 border-t-base bg-surface-2">
+        <div class="container mx-auto max-w-6xl px-4 py-14 text-sm">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+                <div class="col-span-2 md:col-span-1">
+                    <a href="/" class="flex items-center gap-2.5 mb-3">
+                        <span class="icon-tile w-8 h-8 gradient-bg" style="color:#fff;">
+                            <i class="fas fa-shield-halved text-sm" aria-hidden="true"></i>
+                        </span>
+                        <span class="font-bold tracking-tight text-body">PFX&nbsp;to&nbsp;PEM</span>
+                    </a>
+                    <p class="text-muted leading-relaxed">
+                        A free, focused tool to extract private keys and certificates from PFX files in PEM format.
+                    </p>
                 </div>
-                <div class="flex space-x-6">
-                    <a href="https://www.x.com/itxshakil/" aria-label="X (Twitter)" class="text-gray-300 hover:text-white transition duration-200">
-                        <i class="fab fa-twitter text-xl" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://www.github.com/itxshakil/" aria-label="GitHub" class="text-gray-300 hover:text-white transition duration-200">
-                        <i class="fab fa-github text-xl" aria-hidden="true"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/itxshakil/" aria-label="LinkedIn" class="text-gray-300 hover:text-white transition duration-200">
-                        <i class="fab fa-linkedin text-xl" aria-hidden="true"></i>
-                    </a>
+                <div>
+                    <h4 class="font-semibold text-body mb-3">Links</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="/" class="link-muted">Home</a></li>
+                        <li><a href="/#features" class="link-muted">Features</a></li>
+                        <li><a href="/#how-it-works" class="link-muted">How it works</a></li>
+                        <li><a href="/#faq" class="link-muted">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-body mb-3">Articles</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="/blogs/extract-ssl-certificate-from-pfx/" class="link-muted">Extract SSL certificate from PFX</a></li>
+                        <li><a href="/blogs/install-ssl-apache/" class="link-muted">Install SSL on Apache</a></li>
+                        <li><a href="/blogs/renew-ssl-certificate/" class="link-muted">Renew SSL certificate</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-body mb-3">Connect</h4>
+                    <div class="flex gap-5 text-lg">
+                        <a href="https://www.x.com/itxshakil/" aria-label="X (Twitter)" class="link-muted">
+                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://www.github.com/itxshakil/" aria-label="GitHub" class="link-muted">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/itxshakil/" aria-label="LinkedIn" class="link-muted">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 pt-8 pb-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">About</h4>
-                        <p class="text-gray-400">
-                            A free tool to extract private keys and certificates from PFX files and convert them to PEM format for use with web servers and applications.
-                        </p>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="/" class="hover:text-white transition duration-200">Home</a></li>
-                            <li><a href="/#features" class="hover:text-white transition duration-200">Features</a></li>
-                            <li><a href="/#how-it-works" class="hover:text-white transition duration-200">How It Works</a></li>
-                            <li><a href="/#faq" class="hover:text-white transition duration-200">FAQ</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Related Articles</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="/blogs/extract-ssl-certificate-from-pfx/" class="hover:text-white transition duration-200">Extract SSL Certificate from PFX</a></li>
-                            <li><a href="/blogs/install-ssl-apache/" class="hover:text-white transition duration-200">Install SSL on Apache</a></li>
-                            <li><a href="/blogs/renew-ssl-certificate/" class="hover:text-white transition duration-200">Renew SSL Certificate</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                    <p class="mb-4 md:mb-0 text-gray-400">Developed with <i class="fas fa-heart text-red-500" aria-hidden="true"></i> by <a href="https://shakiltech.com?utm_source=pfx2pem" class="text-blue-400 hover:text-blue-300 transition duration-200">Shakil Alam</a></p>
-                    <p class="text-gray-400">&copy; <?= date('Y') ?> PFX to PEM Converter. All rights reserved.</p>
-                </div>
+            <div class="border-t-base pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-muted">
+                <p>Built by <a href="https://shakiltech.com?utm_source=pfx2pem" class="text-body font-medium link-muted">Shakil Alam</a></p>
+                <p>&copy; <?= date('Y') ?> PFX to PEM Converter</p>
             </div>
         </div>
     </footer>
     <div class="fixed bottom-0 end-0 p-4">
-        <button id="shareButton" type="button" aria-label="Share this tool" class="px-6 py-3 bg-white text-blue-700 rounded-full font-bold hover:bg-yellow-100 transition duration-300 shadow-lg flex items-center">
+        <button id="shareButton" type="button" aria-label="Share this tool" class="inline-flex items-center px-4 py-2.5 rounded-full btn-secondary text-sm font-medium shadow-lg">
             <i class="fas fa-share mr-2" aria-hidden="true"></i> Share
         </button>
     </div>

@@ -1,12 +1,102 @@
+/* ============================================================
+   Design system — "Trust & Enterprise"
+   Security-forward, structured, polished. Indigo/blue brand on
+   slate neutrals. Fully realized in both light and dark mode
+   (Tailwind's default `media` strategy follows the OS).
+   ============================================================ */
+:root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --surface-3: #e2e8f0;
+    --text: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #94a3b8;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --brand: #4f46e5;          /* indigo-600 */
+    --brand-hover: #4338ca;    /* indigo-700 */
+    --brand-soft: #eef2ff;     /* indigo-50  */
+    --brand-text: #4338ca;     /* readable indigo on light */
+    --accent-2: #2563eb;       /* supporting blue */
+    --success: #16a34a;
+    --success-soft: #f0fdf4;
+
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.05);
+    --shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+    --ring: rgba(79, 70, 229, 0.16);
+    --hero-grad: linear-gradient(135deg, #eef2ff 0%, #f8fafc 45%, #eff6ff 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0b1120;
+        --surface: #131c31;
+        --surface-2: #1b263f;
+        --surface-3: #243049;
+        --text: #f1f5f9;
+        --text-secondary: #a3b0c2;
+        --text-tertiary: #6b7a90;
+        --border: #243049;
+        --border-strong: #33415c;
+
+        --brand: #6366f1;
+        --brand-hover: #818cf8;
+        --brand-soft: #1e2545;
+        --brand-text: #c7d2fe;
+        --accent-2: #60a5fa;
+        --success: #4ade80;
+        --success-soft: #11271c;
+
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+        --shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+        --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+        --ring: rgba(99, 102, 241, 0.30);
+        --hero-grad: linear-gradient(135deg, #131c31 0%, #0b1120 50%, #111a30 100%);
+    }
+}
+
+/* ---- Semantic helpers (token-driven, dark-mode automatic) ---------- */
+.text-body { color: var(--text); }
+.text-muted { color: var(--text-secondary); }
+.text-faint { color: var(--text-tertiary); }
+.text-brand { color: var(--brand-text); }
+.bg-app { background: var(--bg); }
+.bg-surface { background: var(--surface); }
+.bg-surface-2 { background: var(--surface-2); }
+.border-base { border: 1px solid var(--border); }
+.border-t-base { border-top: 1px solid var(--border); }
+.border-b-base { border-bottom: 1px solid var(--border); }
+.divide-base > * + * { border-top: 1px solid var(--border); }
+
+.link-muted { color: var(--text-secondary); transition: color 0.2s ease; }
+.link-muted:hover { color: var(--text); }
+.nav-link { color: var(--text-secondary); transition: color 0.2s ease; }
+.nav-link:hover { color: var(--text); }
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--bg);
+    color: var(--text);
     scroll-behavior: smooth;
+    letter-spacing: -0.011em;
+}
+
+h1, h2, h3, h4 {
+    letter-spacing: -0.022em;
+    color: var(--text);
 }
 
 :focus-visible {
-    outline: 2px solid #3b82f6;
+    outline: 2px solid var(--brand);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -18,32 +108,131 @@ body {
     }
 }
 
+/* ---- Brand surfaces -------------------------------------------------- */
+
+/* Soft enterprise hero / section wash. */
+.hero-surface {
+    background: var(--hero-grad);
+}
+
+/* Solid brand fill (icon tiles, CTA band, primary chips). */
 .gradient-bg {
-    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, var(--brand) 0%, var(--accent-2) 100%);
 }
 
+/* Faint translucent panel kept for incidental use. */
 .glass-effect {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: saturate(140%) blur(10px);
 }
 
+/* ---- Cards ---------------------------------------------------------- */
+
+.surface-card,
 .glass-card {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
-.glass-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+.glass-card:hover,
+.grow-on-hover:hover {
+    box-shadow: var(--shadow);
+    border-color: var(--border-strong);
 }
 
-.dark .glass-card {
-    background: rgba(30, 41, 59, 0.8);
+.grow-on-hover {
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
+
+/* Featured converter card — slightly elevated, brand-tinted edge. */
+.card-elevated {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow-lg);
+}
+
+/* ---- Buttons -------------------------------------------------------- */
+
+.btn-gradient,
+.btn-primary {
+    background: linear-gradient(135deg, var(--brand) 0%, var(--accent-2) 100%);
+    color: #fff;
+    transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 6px 16px var(--ring);
+}
+
+.btn-gradient:hover,
+.btn-primary:hover {
+    filter: brightness(1.06);
+    box-shadow: 0 8px 22px var(--ring);
+}
+
+.btn-gradient:active,
+.btn-primary:active {
+    transform: scale(0.99);
+}
+
+.btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: var(--surface-2);
+    border-color: var(--text-tertiary);
+}
+
+/* ---- Trust badges / pills ------------------------------------------ */
+
+.trust-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+}
+
+.trust-pill i {
+    color: var(--success);
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    background: var(--brand-soft);
+    color: var(--brand-text);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+/* Brand-tinted icon tile. */
+.icon-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: var(--brand-soft);
+    color: var(--brand-text);
+}
+
+/* ---- Form upload area ---------------------------------------------- */
 
 .custom-file-input {
     position: relative;
@@ -62,68 +251,71 @@ body {
     cursor: pointer;
 }
 
-.btn-gradient {
-    background: linear-gradient(to right, #1e40af, #3b82f6);
-    transition: all 0.3s ease;
+#dropzone {
+    background: var(--surface-2);
+    border: 2px dashed var(--border-strong);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.btn-gradient:hover {
-    background: linear-gradient(to right, #3b82f6, #1e40af);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+#dropzone.is-dragover {
+    border-color: var(--brand);
+    background-color: var(--brand-soft);
 }
 
-.grow-on-hover {
-    transition: all 0.3s ease;
-}
-
-.grow-on-hover:hover {
-    transform: scale(1.03);
-}
-
-/* Skip offscreen layout/paint work on below-the-fold sections */
+/* ---- Perf: skip offscreen work below the fold ---------------------- */
 .cv-section {
     content-visibility: auto;
     contain-intrinsic-size: 0 600px;
 }
 
-/* Drag-and-drop active state for the upload area */
-#dropzone {
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+/* ---- View Transitions: one subtle cross-fade on MPA navigation ------
+   Opts every same-origin navigation (home <-> blog articles) into the
+   browser's default root cross-fade. Capped under ~200ms so it reads as
+   "this is a navigation" without ever feeling slow. Browsers without the
+   API simply navigate instantly — progressive enhancement, no JS, no CSP
+   impact. Fully disabled under reduced-motion (the global *, ::before,
+   ::after rule does NOT match ::view-transition-* pseudo-elements, so the
+   transition is killed explicitly below). */
+@view-transition {
+    navigation: auto;
 }
 
-#dropzone.is-dragover {
-    border-color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.08);
+@media (prefers-reduced-motion: no-preference) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 180ms;
+        animation-timing-function: ease;
+    }
 }
 
-/* Result page: monospace PEM blocks (scrollable, wrapping, selectable) */
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none !important;
+    }
+}
+
+/* ---- FAQ accordion (JS toggles inline max-height) ------------------ */
+.faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+/* ---- Result page: monospace PEM blocks ----------------------------- */
 .pem-block {
     margin: 0;
     max-height: 14rem;
     overflow: auto;
     padding: 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 0.5rem;
-    background: #f8fafc;
-    color: #1f2937;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    color: var(--text);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 0.8125rem;
-    line-height: 1.5;
+    line-height: 1.6;
     white-space: pre;
     -webkit-overflow-scrolling: touch;
-}
-
-.dark .pem-block {
-    border-color: rgba(255, 255, 255, 0.12);
-    background: #0f172a;
-    color: #e2e8f0;
-}
-
-@media (prefers-color-scheme: dark) {
-    .pem-block {
-        border-color: rgba(255, 255, 255, 0.12);
-        background: #0f172a;
-        color: #e2e8f0;
-    }
 }
