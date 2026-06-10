@@ -312,6 +312,132 @@ h1, h2, h3, h4 {
     transition: max-height 0.3s ease;
 }
 
+/* ---- Blog / article pages ------------------------------------------
+   One reusable typography system so every guide matches the homepage's
+   "Trust & Enterprise" tokens without per-page utility classes. */
+.article-hero {
+    background: var(--hero-grad);
+    border-bottom: 1px solid var(--border);
+}
+
+.article-prose {
+    color: var(--text-secondary);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+}
+
+.article-prose > * + * { margin-top: 1.2rem; }
+
+.article-prose section + section { margin-top: 2.5rem; }
+
+.article-prose h2,
+.article-prose h3 {
+    color: var(--text);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.022em;
+    margin-top: 2.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.article-prose h2 { font-size: 1.65rem; }
+.article-prose h3 { font-size: 1.3rem; }
+
+.article-prose h4 {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.4rem;
+}
+
+.article-prose p { color: var(--text-secondary); }
+
+.article-prose a {
+    color: var(--brand-text);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.article-prose a:hover { color: var(--brand-hover); }
+
+.article-prose strong { color: var(--text); font-weight: 600; }
+
+.article-prose ul,
+.article-prose ol { padding-left: 1.4rem; }
+.article-prose ul { list-style: disc; }
+.article-prose ol { list-style: decimal; }
+.article-prose li { margin-top: 0.5rem; padding-left: 0.25rem; }
+.article-prose li::marker { color: var(--text-tertiary); }
+
+/* Inline code (within paragraphs / list items). */
+.article-prose code,
+.article-prose kbd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.85em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.1em 0.4em;
+    color: var(--text);
+}
+
+/* Standalone command lines: a <code> placed directly in a <section> /
+   <article> renders as a full code block. */
+.article-prose > code,
+.article-prose section > code,
+.article-prose article > code {
+    display: block;
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    /* Commands use <br> for line breaks, so collapse source indentation. */
+    white-space: normal;
+    word-break: break-word;
+}
+
+.article-prose pre {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.15rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+.article-prose pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+}
+
+.article-prose blockquote {
+    border-left: 3px solid var(--brand);
+    padding: 0.25rem 0 0.25rem 1rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Warning / security callout inside an article. */
+.article-note {
+    display: flex;
+    gap: 0.65rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.article-note .icon { color: var(--brand); margin-top: 0.15rem; }
+
 /* ---- Result page: monospace PEM blocks ----------------------------- */
 .pem-block {
     margin: 0;

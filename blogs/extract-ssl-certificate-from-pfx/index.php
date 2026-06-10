@@ -12,10 +12,19 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
 <main class="flex-grow">
-    <div class="container max-w-7xl mx-auto px-4 mt-6">
-        <article>
-            <h1>How to Extract SSL Certificates from a PFX File: A Complete Guide</h1>
+    <header class="article-hero">
+        <div class="container mx-auto max-w-3xl px-4 py-12 md:py-16">
+            <a href="/" class="inline-flex items-center gap-2 text-sm link-muted mb-5">
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back to converter
+            </a>
+            <span class="eyebrow mb-4"><svg class="icon" aria-hidden="true"><use href="#i-newspaper"/></svg> SSL Guide</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-body leading-tight">How to Extract SSL Certificates from a PFX File: A Complete Guide</h1>
+            <p class="text-lg text-muted mt-4">A step-by-step walkthrough for extracting private keys, certificates, and CA chains from a PFX file using OpenSSL.</p>
+        </div>
+    </header>
 
+    <div class="container mx-auto max-w-3xl px-4 py-12">
+        <article class="article-prose">
             <section>
                 <p>
                     In today’s digital world, securing your website with an
@@ -101,8 +110,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 <ul class="list-disc pl-6">
                     <li>
                         <strong>Windows:</strong> Download and install OpenSSL from
-                        <a href="https://slproweb.com/products/Win32OpenSSL.html"
-                           class="text-blue-500">
+                        <a href="https://slproweb.com/products/Win32OpenSSL.html">
                             The official OpenSSL distribution
                         </a>.
                         Make sure OpenSSL is added to your system PATH.
@@ -134,9 +142,10 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                     encrypt the private key.
                 </p>
 
-                <p class="text-red-500 font-semibold">
-                    ⚠️ Security tip: Some servers require an unencrypted private key. Only
-                    remove encryption if absolutely necessary and store the file securely.
+                <p class="article-note">
+                    <svg class="icon" aria-hidden="true"><use href="#i-triangle-exclamation"/></svg>
+                    <span><strong>Security tip:</strong> Some servers require an unencrypted private key. Only
+                    remove encryption if absolutely necessary and store the file securely.</span>
                 </p>
 
                 <h4>Step 3: Extract the Public Certificate</h4>
@@ -187,20 +196,19 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 </ul>
             </section>
 
-            <section>
-                <h4>Need a Simpler Way?</h4>
-                <p>
-                    If working with OpenSSL commands feels complex, our online tool makes the
-                    process effortless. Upload your PFX file and convert it to PEM format
-                    securely—no command line required.
-                </p>
-
-                <a href="https://pfx-to-pem-converter.shakiltech.com"
-                   class="text-blue-600 font-semibold">
-                    Try it now – Convert in seconds!
+            <div class="surface-card p-6 md:p-8 text-center mt-10" style="background: var(--brand-soft); border-color: transparent;">
+                <h2 class="text-xl font-semibold text-body mb-2">Need a simpler way?</h2>
+                <p class="text-muted mb-5 max-w-lg mx-auto">Skip the command line. Upload your PFX file and convert it to PEM securely in your browser — nothing is stored.</p>
+                <a href="/" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-gradient font-semibold">
+                    <svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg> Convert in seconds
                 </a>
-            </section>
+            </div>
         </article>
     </div>
+
+    <?php
+    $relatedSlugs = ['install-ssl-apache', 'ssl-certificate-chain'];
+    require $_SERVER['DOCUMENT_ROOT'] . '/partials/related-articles.php';
+    ?>
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>

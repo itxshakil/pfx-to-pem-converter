@@ -10,10 +10,20 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
 <main class="flex-grow">
-    <div class="container max-w-7xl mx-auto px-4 mt-6">
-        <article>
-            <section class="intro mb-6">
-                <h1>SSL vs TLS: Key Differences and Why They Matter</h1>
+    <header class="article-hero">
+        <div class="container mx-auto max-w-3xl px-4 py-12 md:py-16">
+            <a href="/" class="inline-flex items-center gap-2 text-sm link-muted mb-5">
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back to converter
+            </a>
+            <span class="eyebrow mb-4"><svg class="icon" aria-hidden="true"><use href="#i-newspaper"/></svg> SSL Guide</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-body leading-tight">SSL vs TLS: Key Differences and Why They Matter</h1>
+            <p class="text-lg text-muted mt-4">How SSL and TLS differ, why SSL is deprecated, and why TLS is the standard for secure communication today.</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto max-w-3xl px-4 py-12">
+        <article class="article-prose">
+            <section class="intro">
                 <p>
                     When securing data transmitted over the internet, both SSL (Secure Sockets Layer) and TLS (Transport Layer Security) are protocols that play crucial roles in encrypting communication between servers and clients. However, despite their similarities, they are not exactly the same. TLS is the successor to SSL, and over time, it has become the more widely used protocol for ensuring secure communications.
                 </p>
@@ -84,45 +94,11 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 </ul>
             </section>
         </article>
-        <section>
-            <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4 flex items-center">
-                    <svg class="icon text-blue-600 dark:text-blue-400 mr-3" aria-hidden="true"><use href="#i-newspaper"/></svg>
-                    Related Articles
-                </h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <a href="/blogs/extract-ssl-certificate-from-pfx/" class="glass-card p-6 hover:shadow-xl transition duration-300">
-                    <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
-                        <svg class="icon text-4xl text-green-500 dark:text-green-400" aria-hidden="true"><use href="#i-star"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
-                        How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
-                        Learn how to extract SSL certificates from a PFX file using OpenSSL. A step-by-step guide to converting your SSL certificates quickly and securely.
-                    </p>
-                    <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
-                        Read more
-                        <svg class="icon ml-2" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                    </div>
-                </a>
-
-                <a href="/blogs/renew-ssl-certificate/" class="glass-card p-6 hover:shadow-xl transition duration-300">
-                    <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
-                        <svg class="icon text-4xl text-green-500 dark:text-green-400" aria-hidden="true"><use href="#i-sync"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
-                        How to Renew Your SSL Certificates: A Quick Guide
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
-                        Learn how to renew your SSL certificates and keep your website secure. A quick, step-by-step guide for easy certificate renewal.
-                    </p>
-                    <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
-                        Read more
-                        <svg class="icon ml-2" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                    </div>
-                </a>
-            </div>
-        </section>
     </div>
+
+    <?php
+    $relatedSlugs = ['extract-ssl-certificate-from-pfx', 'renew-ssl-certificate'];
+    require $_SERVER['DOCUMENT_ROOT'] . '/partials/related-articles.php';
+    ?>
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>

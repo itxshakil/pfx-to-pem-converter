@@ -11,9 +11,19 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
 <main class="flex-grow">
-    <div class="container max-w-7xl mx-auto px-4 mt-6">
-        <article>
-            <h1>What is SSL and Why is it Important for Website Security?</h1>
+    <header class="article-hero">
+        <div class="container mx-auto max-w-3xl px-4 py-12 md:py-16">
+            <a href="/" class="inline-flex items-center gap-2 text-sm link-muted mb-5">
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back to converter
+            </a>
+            <span class="eyebrow mb-4"><svg class="icon" aria-hidden="true"><use href="#i-newspaper"/></svg> SSL Guide</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-body leading-tight">What is SSL and Why is it Important for Website Security?</h1>
+            <p class="text-lg text-muted mt-4">Learn what SSL is, how it works, and why it's essential for securing your website and earning visitor trust.</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto max-w-3xl px-4 py-12">
+        <article class="article-prose">
             <section id="what-is-ssl">
                 <p>In today’s digital age, ensuring the security of your website is more important than ever. SSL (Secure Sockets Layer) certificates are key to providing encrypted communications between a website and its visitors. This protocol ensures that any data transferred between the two parties is secure and cannot be intercepted by malicious actors.</p>
             </section>
@@ -46,55 +56,19 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 <p>SSL certificates are essential for ensuring the security and trustworthiness of your website. They protect your visitors' data, boost your SEO rankings, and give users confidence that your site is secure. Whether you’re running a small blog or a large e-commerce store, SSL is crucial for keeping your website safe.</p>
             </section>
 
-            <section>
-                <h4 class="text-xl font-semibold text-center py-4">Get Your SSL Certificate Now!</h4>
-                <p class="text-center">Don’t wait to secure your website. Get started with an SSL certificate today and protect your data and visitors.</p>
-                <div class="text-center py-4">
-                    <a href="https://ssls.sjv.io/c/2477633/559014/9312" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Get SSL Certificate</a>
-                </div>
-            </section>
-
-        </article>
-
-        <section>
-            <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4 flex items-center">
-                    <svg class="icon text-blue-600 dark:text-blue-400 mr-3" aria-hidden="true"><use href="#i-newspaper"/></svg>
-                    Related Articles
-                </h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <a href="/blogs/extract-ssl-certificate-from-pfx/" class="glass-card p-6 hover:shadow-xl transition duration-300">
-                    <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
-                        <svg class="icon text-4xl text-green-500 dark:text-green-400" aria-hidden="true"><use href="#i-star"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
-                        How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
-                        Learn how to extract SSL certificates from a PFX file using OpenSSL. A step-by-step guide to converting your SSL certificates quickly and securely.
-                    </p>
-                    <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
-                        Read more
-                        <svg class="icon ml-2" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                    </div>
-                </a>
-
-                <a href="/blogs/ssl-tls-key-difference/" class="glass-card p-6 hover:shadow-xl transition duration-300">
-                    <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
-                        <svg class="icon text-4xl text-green-500 dark:text-green-400" aria-hidden="true"><use href="#i-user"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
-                        SSL vs TLS: Key Differences and Why They Matter
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
-                        Learn the key differences between SSL and TLS protocols and understand why TLS is now the preferred choice for secure communications.
-                    </p>
-                    <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
-                        Read more
-                        <svg class="icon ml-2" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                    </div>
+            <div class="surface-card p-6 md:p-8 text-center mt-10" style="background: var(--brand-soft); border-color: transparent;">
+                <h2 class="text-xl font-semibold text-body mb-2">Get your SSL certificate now</h2>
+                <p class="text-muted mb-5 max-w-lg mx-auto">Don't wait to secure your website. Get started with an SSL certificate today and protect your data and visitors.</p>
+                <a href="https://ssls.sjv.io/c/2477633/559014/9312" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-gradient font-semibold">
+                    <svg class="icon" aria-hidden="true"><use href="#i-shield-halved"/></svg> Get SSL certificate
                 </a>
             </div>
-        </section>
+        </article>
     </div>
+
+    <?php
+    $relatedSlugs = ['extract-ssl-certificate-from-pfx', 'ssl-tls-key-difference'];
+    require $_SERVER['DOCUMENT_ROOT'] . '/partials/related-articles.php';
+    ?>
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>

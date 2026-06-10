@@ -13,9 +13,19 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
 <main class="flex-grow">
-    <div class="container max-w-7xl mx-auto px-4 mt-6">
-        <article>
-            <h1>How to Renew Your SSL Certificates: A Quick Guide</h1>
+    <header class="article-hero">
+        <div class="container mx-auto max-w-3xl px-4 py-12 md:py-16">
+            <a href="/" class="inline-flex items-center gap-2 text-sm link-muted mb-5">
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back to converter
+            </a>
+            <span class="eyebrow mb-4"><svg class="icon" aria-hidden="true"><use href="#i-newspaper"/></svg> SSL Guide</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-body leading-tight">How to Renew Your SSL Certificates: A Quick Guide</h1>
+            <p class="text-lg text-muted mt-4">Renew your SSL certificate in a few simple steps and avoid security warnings or unexpected downtime.</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto max-w-3xl px-4 py-12">
+        <article class="article-prose">
             <section>
                 <p>SSL certificates are essential for maintaining the trust of your website visitors and securing sensitive data. However, SSL certificates come with expiration dates, and if you don’t renew them on time, you could face security warnings or even loss of traffic. In this guide, we'll show you how to renew your SSL certificates in just a few simple steps, ensuring your website remains secure and trusted.</p>
             </section>
@@ -79,46 +89,11 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 </ul>
             </section>
         </article>
-
-        <section>
-            <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4 flex items-center">
-                    <svg class="icon text-blue-600 dark:text-blue-400 mr-3" aria-hidden="true"><use href="#i-newspaper"/></svg>
-                    Related Articles
-                </h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <a href="/blogs/extract-ssl-certificate-from-pfx/" class="glass-card p-6 hover:shadow-xl transition duration-300">
-                    <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
-                        <svg class="icon text-4xl text-green-500 dark:text-green-400" aria-hidden="true"><use href="#i-star"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
-                        How to Extract SSL Certificates from PFX: A Complete Guide to Converting Your Certificates with Ease
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
-                        Learn how to extract SSL certificates from a PFX file using OpenSSL. A step-by-step guide to converting your SSL certificates quickly and securely.
-                    </p>
-                    <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
-                        Read more
-                        <svg class="icon ml-2" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                    </div>
-                </a>
-
-                <a href="/blogs/ssl-certificate-chain/" class="glass-card p-6 hover:shadow-xl transition duration-300">
-                    <div class="h-40 bg-green-100 dark:bg-green-900 rounded-lg mb-4 flex items-center justify-center">
-                        <svg class="icon text-4xl text-green-500 dark:text-green-400" aria-hidden="true"><use href="#i-sync"/></svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400">
-                        Understanding SSL Certificate Chains and How They Work
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
-                        Learn about SSL certificate chains, how they work, and why they are important for securing your website.
-                    </p>
-                    <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
-                        Read more
-                        <svg class="icon ml-2" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-                    </div>
-                </a>
-            </div>
-        </section>
     </div>
+
+    <?php
+    $relatedSlugs = ['extract-ssl-certificate-from-pfx', 'ssl-certificate-chain'];
+    require $_SERVER['DOCUMENT_ROOT'] . '/partials/related-articles.php';
+    ?>
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>
