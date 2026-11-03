@@ -3,7 +3,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createRequire } from 'node:module';
@@ -21,6 +21,11 @@ let dir;
 // Git for Windows ships an OpenSSL that writes CRLF; CI on Linux writes LF already.
 const openssl = (args, input) =>
     execFileSync('openssl', args, { cwd: dir, encoding: 'utf8', input }).replace(/\r\n/g, '\n');
+const passwordFile = (password) => {
+    writeFileSync(join(dir, 'password.txt'), `${password}
+`, 'utf8');
+    return 'file:password.txt';
+};
 const pemBlocks = (text) => (text.match(/-----BEGIN [A-Z ]+-----[\s\S]*?-----END [A-Z ]+-----\n/g) || []);
 
 before(() => {
@@ -38,7 +43,9 @@ before(() => {
     openssl(['pkcs12', '-export', ...ec, '-out', 'ec-aes.pfx', '-passout', 'pass:secret']);
     openssl(['pkcs12', '-export', '-legacy', ...ec, '-out', 'ec-legacy.pfx', '-passout', 'pass:secret']);
     openssl(['pkcs12', '-export', '-inkey', 'leaf.key', '-in', 'leaf.crt', '-out', 'no-password.pfx', '-passout', 'pass:']);
-    openssl(['pkcs12', '-export', ...rsa, '-out', 'unicode.pfx', '-passout', 'pass:pässwörd']);
+    // Passwords go to OpenSSL through a UTF-8 file: on Windows, argv arrives in the ANSI code page.
+    openssl(['pkcs12', '-export', ...rsa, '-out', 'unicode.pfx', '-passout', passwordFile('pässwörd')]);
+    openssl(['pkcs12', '-export', '-legacy', ...rsa, '-out', 'unicode-legacy.pfx', '-passout', passwordFile('pässwörd')]);
 });
 
 after(() => rmSync(dir, { recursive: true, force: true }));
@@ -47,7 +54,7 @@ const read = (name) => readFileSync(join(dir, name)).toString('binary');
 
 // What the server path (openssl_pkcs12_read) returns: PKCS#8 key, leaf cert, CA chain.
 const expected = (name, pass) => {
-    const pkcs12 = (...args) => openssl(['pkcs12', ...(name.includes('legacy') ? ['-legacy'] : []), '-in', name, '-passin', `pass:${pass}`, ...args]);
+    const pkcs12 = (...args) => openssl(['pkcs12', ...(name.includes('legacy') ? ['-legacy'] : []), '-in', name, '-passin', passwordFile(pass), ...args]);
 
     return {
         key: openssl(['pkey'], pkcs12('-nocerts', '-nodes')),
@@ -63,6 +70,7 @@ for (const [name, pass] of [
     ['ec-legacy.pfx', 'secret'],
     ['no-password.pfx', ''],
     ['unicode.pfx', 'pässwörd'],
+    ['unicode-legacy.pfx', 'pässwörd'],
 ]) {
     test(`${name} converts to the same PEM files as OpenSSL`, () => {
         const result = convertPfx(forge, read(name), pass);
