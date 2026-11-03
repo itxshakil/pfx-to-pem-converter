@@ -17,8 +17,9 @@ You can expect an initial acknowledgement within a few days. Once the issue is c
 
 ## Scope
 
-This is a stateless converter that processes uploads in memory/temp storage and deletes them immediately. Reports of particular interest include:
+This converter runs in the browser by default, so the file and password are not sent anywhere. A server fallback (`process.php`) handles files the browser cannot read, in temp storage that is deleted at the end of the request. Reports of particular interest include:
 
+- Ways the file, key or password could leave the browser without the user choosing the server fallback.
 - Ways uploaded files, keys, or passwords could be persisted, leaked, or accessed by another request.
 - CSRF, CSP, or header-hardening bypasses.
 - Path traversal or temp-file handling issues.
@@ -26,4 +27,4 @@ This is a stateless converter that processes uploads in memory/temp storage and 
 
 ## A note for users
 
-Your PFX password and private keys are sensitive. This tool never stores them, but as a general practice, avoid uploading production private keys to any online service you do not control. For maximum safety, you can self-host this project or use OpenSSL locally — see the [SSL guides](https://pfx-to-pem-converter.shakiltech.com).
+Your PFX password and private keys are sensitive. This tool converts them in your browser and never stores them. Even so, as a general practice, be careful with production private keys on any website you do not control. For maximum safety, you can self-host this project or use OpenSSL locally — see the [SSL guides](https://pfx-to-pem-converter.shakiltech.com).

@@ -158,10 +158,7 @@ register_shutdown_function(function () use ($workDir) {
     }
 });
 
-$pfxFilePath    = $workDir . '/source.pfx';
-$privateKeyFile = $workDir . '/private.pem';
-$certFile       = $workDir . '/cert.pem';
-$caChainFile    = $workDir . '/ca-chain.pem';
+$pfxFilePath = $workDir . '/source.pfx';
 
 if (!move_uploaded_file($uploadedFile['tmp_name'], $pfxFilePath)) {
     redirectWithError('File upload failed. Please try again.');
@@ -184,43 +181,14 @@ if (!openssl_pkcs12_read($pfxContent, $pkcs12, $pfxPassword)) {
     }
 }
 
-file_put_contents($privateKeyFile, $pkcs12['pkey']);
-file_put_contents($certFile, $pkcs12['cert']);
-
 // Assemble the CA chain (intermediate + root certificates) if the PFX bundled
 // any. Many servers need this for the certificate chain to validate.
 $caChainPem = '';
 if (!empty($pkcs12['extracerts']) && is_array($pkcs12['extracerts'])) {
     $caChainPem = trim(implode("\n", array_map('trim', $pkcs12['extracerts']))) . "\n";
 }
-$hasCaChain = $caChainPem !== '';
-if ($hasCaChain) {
-    file_put_contents($caChainFile, $caChainPem);
-}
 
-$baseName  = sanitizeFilename($uploadedFile['name']);
-$timestamp = date('Ymd_His');
-$zipFileName = "{$baseName}_cert_{$timestamp}.zip";
-$zipFilePath = $workDir . '/' . $zipFileName;
-
-$zip = new ZipArchive();
-if ($zip->open($zipFilePath, ZipArchive::CREATE) !== true) {
-    redirectWithError('Error creating the ZIP archive. Please try again later.');
-}
-
-$zip->addFile($privateKeyFile, 'private.pem');
-$zip->addFile($certFile, 'cert.pem');
-if ($hasCaChain) {
-    $zip->addFile($caChainFile, 'ca-chain.pem');
-}
-$zip->close();
-
-// Read the results into memory so the page can offer copy + per-file and ZIP
-// downloads entirely client-side. Nothing is persisted: the temp dir (PFX,
-// PEMs, ZIP) is wiped by the shutdown handler the moment this request ends.
-$privateKeyPem = $pkcs12['pkey'];
-$certPem       = $pkcs12['cert'];
-$zipBase64     = base64_encode((string) file_get_contents($zipFilePath));
+$zipFileName = sanitizeFilename($uploadedFile['name']) . '_cert_' . date('Ymd_His') . '.zip';
 
 // This page contains the user's private key: never cache or index it.
 if (!headers_sent()) {
@@ -238,162 +206,17 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/head.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
 <main class="grow">
-    <section class="py-14">
-        <div class="container mx-auto px-4 max-w-4xl">
-            <div class="text-center mb-10">
-                <span class="icon-tile w-14 h-14 mx-auto mb-4" style="background: var(--success-soft); color: var(--success);">
-                    <svg class="icon text-2xl" aria-hidden="true"><use href="#i-circle-check"/></svg>
-                </span>
-                <h1 class="text-3xl font-bold text-body mb-2">Conversion complete</h1>
-                <p class="text-muted max-w-xl mx-auto">
-                    Copy the contents below or download the files. Everything was processed in a temporary folder and
-                    has already been deleted from the server.
-                </p>
-            </div>
-
-            <div class="surface-card p-6 mb-6">
-                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
-                    <h2 class="text-lg font-semibold text-body flex items-center gap-2">
-                        <svg class="icon text-brand" aria-hidden="true"><use href="#i-key"/></svg>private.pem
-                    </h2>
-                    <div class="flex flex-wrap gap-3">
-                        <button type="button" data-copy="pem-key"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-gradient font-medium text-sm">
-                            <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span class="copy-label">Copy</span>
-                        </button>
-                        <button type="button" data-download="pem-key" data-filename="private.pem"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium text-sm">
-                            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download
-                        </button>
-                    </div>
-                </div>
-                <p class="text-sm text-faint mb-3 flex items-center gap-1.5">
-                    <svg class="icon" aria-hidden="true"><use href="#i-triangle-exclamation"/></svg>
-                    Keep your private key secret. Store it somewhere safe and never share it.
-                </p>
-                <pre id="pem-key" class="pem-block"><?= htmlspecialchars($privateKeyPem, ENT_QUOTES) ?></pre>
-            </div>
-
-            <div class="surface-card p-6 mb-6">
-                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
-                    <h2 class="text-lg font-semibold text-body flex items-center gap-2">
-                        <svg class="icon text-brand" aria-hidden="true"><use href="#i-certificate"/></svg>cert.pem
-                    </h2>
-                    <div class="flex flex-wrap gap-3">
-                        <button type="button" data-copy="pem-cert"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-gradient font-medium text-sm">
-                            <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span class="copy-label">Copy</span>
-                        </button>
-                        <button type="button" data-download="pem-cert" data-filename="cert.pem"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium text-sm">
-                            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download
-                        </button>
-                    </div>
-                </div>
-                <pre id="pem-cert" class="pem-block"><?= htmlspecialchars($certPem, ENT_QUOTES) ?></pre>
-            </div>
-
-            <?php if ($hasCaChain): ?>
-            <div class="surface-card p-6 mb-6">
-                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
-                    <h2 class="text-lg font-semibold text-body flex items-center gap-2">
-                        <svg class="icon text-brand" aria-hidden="true"><use href="#i-route"/></svg>ca-chain.pem
-                    </h2>
-                    <div class="flex flex-wrap gap-3">
-                        <button type="button" data-copy="pem-ca"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-gradient font-medium text-sm">
-                            <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span class="copy-label">Copy</span>
-                        </button>
-                        <button type="button" data-download="pem-ca" data-filename="ca-chain.pem"
-                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium text-sm">
-                            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download
-                        </button>
-                    </div>
-                </div>
-                <p class="text-sm text-faint mb-3 flex items-center gap-1.5">
-                    <svg class="icon" aria-hidden="true"><use href="#i-lightbulb"/></svg>
-                    Intermediate &amp; root certificates. Many servers need this for the chain to validate.
-                </p>
-                <pre id="pem-ca" class="pem-block"><?= htmlspecialchars($caChainPem, ENT_QUOTES) ?></pre>
-            </div>
-            <?php endif; ?>
-
-            <div class="text-center">
-                <button type="button" id="download-zip"
-                        data-zip="<?= $zipBase64 ?>" data-filename="<?= htmlspecialchars($zipFileName, ENT_QUOTES) ?>"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-gradient font-semibold">
-                    <svg class="icon" aria-hidden="true"><use href="#i-file-zipper"/></svg>Download all as .zip
-                </button>
-                <p class="mt-6">
-                    <a href="/" class="inline-flex items-center gap-2 text-brand font-medium">
-                        <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Convert another file
-                    </a>
-                </p>
-            </div>
-        </div>
-    </section>
+<?php
+$result = ['key' => $pkcs12['pkey'], 'cert' => $pkcs12['cert'], 'chain' => $caChainPem, 'zipName' => $zipFileName];
+$resultHidden = false;
+$resultHeading = 'h1';
+$resultIntro = 'Copy the contents below or download the files. Your file was converted on our server in a temporary folder that is deleted as soon as this page is sent.';
+require $_SERVER['DOCUMENT_ROOT'] . '/partials/result.php';
+?>
 </main>
-<script nonce="<?= $nonce ?>">
-    (function () {
-        'use strict';
-
-        const flash = (btn, text) => {
-            const label = btn.querySelector('.copy-label');
-            if (!label) return;
-            const original = label.textContent;
-            label.textContent = text;
-            setTimeout(() => { label.textContent = original; }, 2000);
-        };
-
-        const saveBlob = (blob, filename) => {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
-        };
-
-        document.querySelectorAll('[data-copy]').forEach((btn) => {
-            btn.addEventListener('click', async () => {
-                const source = document.getElementById(btn.getAttribute('data-copy'));
-                if (!source) return;
-                try {
-                    await navigator.clipboard.writeText(source.textContent);
-                    flash(btn, 'Copied!');
-                } catch (err) {
-                    flash(btn, 'Press Ctrl+C');
-                }
-            });
-        });
-
-        document.querySelectorAll('[data-download]').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const source = document.getElementById(btn.getAttribute('data-download'));
-                if (!source) return;
-                saveBlob(new Blob([source.textContent], { type: 'application/x-pem-file' }),
-                    btn.getAttribute('data-filename'));
-            });
-        });
-
-        const zipBtn = document.getElementById('download-zip');
-        if (zipBtn) {
-            zipBtn.addEventListener('click', () => {
-                const binary = atob(zipBtn.getAttribute('data-zip'));
-                const bytes = new Uint8Array(binary.length);
-                for (let i = 0; i < binary.length; i++) {
-                    bytes[i] = binary.charCodeAt(i);
-                }
-                saveBlob(new Blob([bytes], { type: 'application/zip' }),
-                    zipBtn.getAttribute('data-filename'));
-            });
-        }
-    })();
-</script>
+<script src="/js/result.js" defer></script>
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php';
 
-// Temp files (PFX, PEMs, ZIP) are removed by the shutdown handler above.
+// The uploaded .pfx is removed by the shutdown handler above.
 exit;
