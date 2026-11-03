@@ -454,3 +454,42 @@ h1, h2, h3, h4 {
     white-space: pre;
     -webkit-overflow-scrolling: touch;
 }
+
+/* ---- Result page: certificate details under each PEM block ------------ */
+.cert-details {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+}
+
+.cert-details dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25rem 1rem;
+    margin: 0;
+}
+
+.cert-details > div + div {
+    margin-top: 1.25rem;
+}
+
+.cert-details dt {
+    color: var(--text-secondary);
+}
+
+.cert-details dd {
+    margin: 0;
+    color: var(--text);
+    /* Domains, serials and fingerprints are long unbroken strings. */
+    overflow-wrap: anywhere;
+}
+
+/* Status is never colour alone: the text says "Expired", "Expires in" or "No". */
+.cert-details dd[data-state="good"] { color: var(--success); }
+.cert-details dd[data-state="warn"] { color: #b45309; font-weight: 600; }
+.cert-details dd[data-state="bad"] { color: #dc2626; font-weight: 600; }
+
+.cert-details-title {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}

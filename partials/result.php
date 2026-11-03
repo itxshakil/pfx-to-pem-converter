@@ -1,12 +1,13 @@
 <?php
 /**
- * The converted key, certificate and CA chain with copy and download buttons.
+ * The converted key, certificate, fullchain and CA chain with copy and download buttons.
  * Shared by both paths so they look the same:
  *  - index.php renders it empty and hidden; js/convert.js fills it in after converting in the browser.
  *  - process.php renders it filled in after the server fallback.
- * js/result.js wires up the buttons and builds the ZIP from the text in the page.
+ * js/result.js wires up the buttons, builds the ZIP from the text in the page and fills
+ * the details slots (validity, domains, key match) from the PEM text, for both paths.
  *
- * Expects $result = ['key' => string, 'cert' => string, 'chain' => string, 'zipName' => ?string]
+ * Expects $result = ['key' => string, 'cert' => string, 'fullchain' => string, 'chain' => string, 'zipName' => ?string]
  * and $resultIntro. An empty key means the browser path: start hidden, below the page's own h1.
  */
 $isEmpty = $result['key'] === '';
@@ -15,8 +16,10 @@ $blocks = [
     ['id' => 'pem-key', 'file' => 'private.pem', 'icon' => 'i-key', 'text' => $result['key'],
         'note' => ['i-triangle-exclamation', 'Keep your private key secret. Store it somewhere safe and never share it.']],
     ['id' => 'pem-cert', 'file' => 'cert.pem', 'icon' => 'i-certificate', 'text' => $result['cert'], 'note' => null],
+    ['id' => 'pem-full', 'file' => 'fullchain.pem', 'icon' => 'i-list-check', 'text' => $result['fullchain'],
+        'note' => ['i-lightbulb', 'Your certificate followed by its intermediates. Use this for Nginx <code>ssl_certificate</code> and most hosting panels.']],
     ['id' => 'pem-ca', 'file' => 'ca-chain.pem', 'icon' => 'i-route', 'text' => $result['chain'],
-        'note' => ['i-lightbulb', 'Intermediate &amp; root certificates. Many servers need this for the chain to validate.']],
+        'note' => ['i-lightbulb', 'Intermediate &amp; root certificates, in order from your certificate up. For Apache <code>SSLCertificateChainFile</code>.']],
 ];
 ?>
 <section id="result" class="py-14" tabindex="-1" <?= $isEmpty ? 'hidden' : '' ?>>
@@ -53,6 +56,7 @@ $blocks = [
             </p>
             <?php endif; ?>
             <pre id="<?= $block['id'] ?>" class="pem-block"><?= htmlspecialchars($block['text'], ENT_QUOTES) ?></pre>
+            <div class="cert-details" data-details-for="<?= $block['id'] ?>" hidden></div>
         </div>
         <?php endforeach; ?>
 
