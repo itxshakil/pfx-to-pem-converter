@@ -118,14 +118,14 @@ function sanitizeFilename($filename) {
  * expect, whatever order the file stored it in. Same rule as js/pfx-convert.js.
  */
 function orderChain($leafPem, array $certPems) {
-    $remaining = array_values($certPems);
+    $remaining = array_map(static fn ($pem) => ['pem' => $pem, 'parsed' => openssl_x509_parse($pem)], array_values($certPems));
     $ordered = [];
-    $current = openssl_x509_parse($leafPem);
-    while ($current !== false) {
+    $leaf = openssl_x509_parse($leafPem);
+    $issuer = $leaf === false ? null : $leaf['issuer'];
+    while ($issuer !== null) {
         $next = null;
-        foreach ($remaining as $i => $pem) {
-            $parsed = openssl_x509_parse($pem);
-            if ($parsed !== false && $parsed['subject'] === $current['issuer']) {
+        foreach ($remaining as $i => $cert) {
+            if ($cert['parsed'] !== false && $cert['parsed']['subject'] === $issuer) {
                 $next = $i;
                 break;
             }
@@ -133,11 +133,11 @@ function orderChain($leafPem, array $certPems) {
         if ($next === null) {
             break;
         }
-        $ordered[] = $remaining[$next];
-        $current = openssl_x509_parse($remaining[$next]);
+        $ordered[] = $remaining[$next]['pem'];
+        $issuer = $remaining[$next]['parsed']['issuer'];
         array_splice($remaining, $next, 1);
     }
-    return array_merge($ordered, $remaining);
+    return array_merge($ordered, array_column($remaining, 'pem'));
 }
 
 function isSelfSigned($pem) {

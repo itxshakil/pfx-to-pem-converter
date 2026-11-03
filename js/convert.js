@@ -56,8 +56,7 @@
     function showResult(pem, fileName) {
         document.getElementById('pem-key').textContent = pem.key;
         document.getElementById('pem-cert').textContent = pem.cert;
-        // With no intermediates the fullchain is just cert.pem again, so its card stays hidden.
-        document.getElementById('pem-full').textContent = pem.fullchain === pem.cert ? '' : pem.fullchain;
+        document.getElementById('pem-full').textContent = pem.fullchain;
         document.getElementById('pem-ca').textContent = pem.chain.join('');
         result.querySelectorAll('[data-pem-card]').forEach((card) => {
             card.hidden = document.getElementById(card.dataset.pemCard).textContent === '';
