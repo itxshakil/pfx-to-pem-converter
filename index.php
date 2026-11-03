@@ -67,13 +67,13 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                         Extract keys &amp; certificates from PFX, in PEM
                     </h1>
                     <p class="text-lg text-muted mb-8 max-w-xl">
-                        Upload a <code class="text-brand font-medium">.pfx</code> file and get the private key and
-                        certificate as ready-to-use PEM files. Processed over an encrypted connection and deleted the
-                        moment your download is ready — never stored.
+                        Choose a <code class="text-brand font-medium">.pfx</code> file and get the private key and
+                        certificate as ready-to-use PEM files. The conversion runs in your browser, so your file and
+                        password never leave your device.
                     </p>
                     <div class="flex flex-wrap gap-3 mb-10">
-                        <span class="trust-pill"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Encrypted in transit</span>
-                        <span class="trust-pill"><svg class="icon" aria-hidden="true"><use href="#i-trash-can"/></svg> Deleted instantly</span>
+                        <span class="trust-pill"><svg class="icon" aria-hidden="true"><use href="#i-shield-halved"/></svg> Runs in your browser</span>
+                        <span class="trust-pill"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Nothing uploaded</span>
                         <span class="trust-pill"><svg class="icon" aria-hidden="true"><use href="#i-eye-slash"/></svg> Nothing logged</span>
                     </div>
                     <dl class="grid grid-cols-3 gap-6 max-w-md">
@@ -109,7 +109,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                         </div>
                     <?php endif; ?>
 
-                    <form action="process.php" method="post" enctype="multipart/form-data" class="space-y-5">
+                    <form id="convert-form" action="process.php" method="post" enctype="multipart/form-data" class="space-y-5">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
 
                         <div id="dropzone" class="p-6 rounded-xl text-center">
@@ -140,6 +140,20 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                             <p class="mt-2 text-sm text-faint">The password that protects your .pfx file.</p>
                         </div>
 
+                        <div id="convert-error" class="rounded-lg border-base p-4 text-sm" role="alert" hidden>
+                            <p class="flex items-start gap-2 text-body">
+                                <svg class="icon mt-0.5 shrink-0" style="color:#dc2626;" aria-hidden="true"><use href="#i-circle-exclamation"/></svg>
+                                <span id="convert-error-text"></span>
+                            </p>
+                            <div id="server-fallback" hidden>
+                                <button type="button" id="server-fallback-button"
+                                        class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg btn-secondary font-medium">
+                                    <svg class="icon" aria-hidden="true"><use href="#i-server"/></svg>Convert on our server instead
+                                </button>
+                                <p class="mt-2 text-faint">This uploads the file and password over HTTPS. They are deleted as soon as the conversion finishes.</p>
+                            </div>
+                        </div>
+
                         <button type="submit" class="w-full btn-gradient font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
                             <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
                             Extract &amp; download PEM files
@@ -147,12 +161,19 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 
                         <p class="text-xs text-faint text-center flex items-center justify-center gap-1.5">
                             <svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
-                            Your file and password are never stored or logged.
+                            Converted in your browser. Your file and password never leave your device.
                         </p>
                     </form>
                 </div>
             </div>
         </section>
+
+        <?php
+        // js/convert.js fills this in, and names the ZIP, after converting in the browser.
+        $result = ['key' => '', 'cert' => '', 'chain' => ''];
+        $resultIntro = 'Converted in your browser. Your file and password never left this device.';
+        require $_SERVER['DOCUMENT_ROOT'] . '/partials/result.php';
+        ?>
 
         <div class="container mx-auto max-w-6xl px-4">
             <!-- What happens to your file -->
@@ -164,9 +185,10 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                     <div>
                         <h2 id="privacy-heading" class="text-lg font-semibold text-body mb-2">What happens to your file</h2>
                         <p class="text-muted">
-                            Your <code class="text-brand">.pfx</code> file is uploaded over an encrypted (HTTPS) connection and processed in an
-                            isolated, temporary folder on our server. The private key, certificate, and ZIP are generated, sent to you,
-                            and then permanently deleted in the same request. We never store your file or your password, and nothing is logged.
+                            Your <code class="text-brand">.pfx</code> file is read and converted by JavaScript in your browser. The file,
+                            the password and the private key never leave your device. If your browser cannot read a file, you can choose to
+                            convert it on our server instead: it is sent over HTTPS, processed in a temporary folder outside the website,
+                            and deleted in the same request. Nothing is stored or logged either way.
                         </p>
                     </div>
                 </div>
@@ -177,12 +199,12 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 <div class="surface-card grow-on-hover p-6">
                     <span class="icon-tile w-12 h-12 mb-4"><svg class="icon text-lg" aria-hidden="true"><use href="#i-shield-halved"/></svg></span>
                     <h3 class="text-lg font-semibold text-body mb-1.5">Private by design</h3>
-                    <p class="text-muted text-sm">Processed over a secure connection and permanently deleted the moment your download is ready — never stored.</p>
+                    <p class="text-muted text-sm">Your file is converted on your own device. Nothing is uploaded, so there is nothing for us to store.</p>
                 </div>
                 <div class="surface-card grow-on-hover p-6">
                     <span class="icon-tile w-12 h-12 mb-4"><svg class="icon text-lg" aria-hidden="true"><use href="#i-bolt"/></svg></span>
                     <h3 class="text-lg font-semibold text-body mb-1.5">Fast &amp; in-browser delivery</h3>
-                    <p class="text-muted text-sm">Conversion happens server-side in milliseconds; your PEM files are ready to copy or download instantly.</p>
+                    <p class="text-muted text-sm">No upload and no waiting on a server. Your PEM files are ready to copy or download as soon as you click.</p>
                 </div>
                 <div class="surface-card grow-on-hover p-6">
                     <span class="icon-tile w-12 h-12 mb-4"><svg class="icon text-lg" aria-hidden="true"><use href="#i-server"/></svg></span>
@@ -202,14 +224,14 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                         <span class="icon-tile w-11 h-11 shrink-0"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg></span>
                         <div>
                             <h3 class="text-lg font-semibold text-body mb-1.5">Secure processing</h3>
-                            <p class="text-muted text-sm">Sent over an encrypted connection, processed in an isolated temporary space, and deleted immediately after conversion. We never store your file or password.</p>
+                            <p class="text-muted text-sm">The conversion runs in your browser, so your private key never travels over the internet. We never see your file or password.</p>
                         </div>
                     </div>
                     <div class="surface-card grow-on-hover p-6 flex items-start gap-4">
                         <span class="icon-tile w-11 h-11 shrink-0"><svg class="icon" aria-hidden="true"><use href="#i-wand-magic-sparkles"/></svg></span>
                         <div>
                             <h3 class="text-lg font-semibold text-body mb-1.5">Simple process</h3>
-                            <p class="text-muted text-sm">Upload your PFX file, enter your password, and download the converted files. No command line, no technical skills required.</p>
+                            <p class="text-muted text-sm">Choose your PFX file, enter your password, and download the converted files. No command line, no technical skills required.</p>
                         </div>
                     </div>
                     <div class="surface-card grow-on-hover p-6 flex items-start gap-4">
@@ -238,8 +260,8 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <div class="surface-card p-6">
                         <span class="icon-tile w-11 h-11 mb-4"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span>
-                        <h3 class="text-base font-semibold text-body mb-1.5">1. Upload your file</h3>
-                        <p class="text-muted text-sm">Upload your .pfx file through the secure form. It is processed in an isolated temporary space and deleted right after.</p>
+                        <h3 class="text-base font-semibold text-body mb-1.5">1. Choose your file</h3>
+                        <p class="text-muted text-sm">Pick your .pfx file or drop it on the form. It stays on your device; your browser does the work.</p>
                     </div>
                     <div class="surface-card p-6">
                         <span class="icon-tile w-11 h-11 mb-4"><svg class="icon" aria-hidden="true"><use href="#i-key"/></svg></span>
@@ -301,7 +323,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                     </div>
                     <div class="p-6">
                         <button class="faq-toggle flex justify-between items-center w-full text-left gap-4">
-                            <span class="text-base font-semibold text-body">Why do I need a password to upload?</span>
+                            <span class="text-base font-semibold text-body">Why do I need the password?</span>
                             <svg class="icon text-faint transition-transform duration-300" aria-hidden="true"><use href="#i-chevron-down"/></svg>
                         </button>
                         <div class="faq-content text-muted text-sm">
@@ -310,11 +332,11 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
                     </div>
                     <div class="p-6">
                         <button class="faq-toggle flex justify-between items-center w-full text-left gap-4">
-                            <span class="text-base font-semibold text-body">Is my file stored on the server?</span>
+                            <span class="text-base font-semibold text-body">Is my file uploaded or stored?</span>
                             <svg class="icon text-faint transition-transform duration-300" aria-hidden="true"><use href="#i-chevron-down"/></svg>
                         </button>
                         <div class="faq-content text-muted text-sm">
-                            <p class="pt-4">No. Your file and all generated files are processed temporarily and deleted automatically in the same request. We do not store any of your certificate files or private keys on our servers.</p>
+                            <p class="pt-4">No. The conversion runs in your browser, so your file, password and private key stay on your device. The only exception is a file your browser cannot read: then you can choose to convert it on our server, where it is processed in a temporary folder and deleted in the same request. We never store certificate files or private keys.</p>
                         </div>
                     </div>
                     <div class="p-6">
@@ -357,7 +379,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
             <div class="container mx-auto max-w-4xl px-4 py-16 text-center">
                 <h2 class="text-3xl font-bold text-white mb-4">Ready to convert your PFX files?</h2>
                 <p class="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                    Extract private keys and certificates from your PFX files in seconds. Free, secure, and nothing is stored.
+                    Extract private keys and certificates from your PFX files in seconds. Free, private, and nothing leaves your device.
                 </p>
                 <a href="#converter" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-white font-semibold shadow-lg" style="color: var(--brand-hover);">
                     <svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg> Convert now
@@ -365,6 +387,9 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
             </div>
         </section>
     </main>
+    <script src="/js/pfx-convert.js" defer></script>
+    <script src="/js/result.js" defer></script>
+    <script src="/js/convert.js" defer></script>
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php';
 
