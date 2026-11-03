@@ -49,7 +49,7 @@ The conversion runs in the browser (`js/pfx-convert.js`). It covers modern AES a
 
 ## Tech Stack
 
-- **PHP 8.2+** — server-rendered, no framework. Uses the `openssl` and `zip` extensions.
+- **PHP 8.2+** — server-rendered, no framework. Uses the `openssl` extension.
 - **Tailwind CSS 3** — token-driven design system with light/dark support.
 - **Vanilla JavaScript** — progressive enhancement, no client framework.
 - **Service Worker + Web App Manifest** — offline support and installability.
@@ -60,7 +60,7 @@ There are **no Composer dependencies** — the only build tooling is npm + Tailw
 
 ### Prerequisites
 
-- [PHP](https://www.php.net/) **8.2 or later** with the `openssl` and `zip` extensions enabled
+- [PHP](https://www.php.net/) **8.2 or later** with the `openssl` extension enabled
 - [Node.js](https://nodejs.org/) **18+** and npm (only needed to rebuild the CSS)
 
 ### Run locally

@@ -50,7 +50,7 @@
 
     /**
      * @param {object} forge  node-forge
-     * @param {string} der    the .pfx file as a binary string
+     * @param {string|object} der  the .pfx file as a binary string or a forge buffer
      * @param {string} password
      * @returns {{key: string, cert: string, chain: string[]}}
      * @throws {Error} with code "password", "unsupported" or "no-key"

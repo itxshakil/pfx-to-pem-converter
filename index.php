@@ -169,9 +169,8 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
         </section>
 
         <?php
-        $result = ['key' => '', 'cert' => '', 'chain' => '', 'zipName' => 'certificates.zip'];
-        $resultHidden = true;
-        $resultHeading = 'h2';
+        // js/convert.js fills this in, and names the ZIP, after converting in the browser.
+        $result = ['key' => '', 'cert' => '', 'chain' => ''];
         $resultIntro = 'Converted in your browser. Your file and password never left this device.';
         require $_SERVER['DOCUMENT_ROOT'] . '/partials/result.php';
         ?>

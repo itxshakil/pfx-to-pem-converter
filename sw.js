@@ -9,10 +9,13 @@ const STATIC_ASSETS = [
     '/js/pfx-convert.js',
     '/js/result.js',
     '/js/convert.js',
-    '/js/vendor/forge.min.js',
     '/manifest.json',
     OFFLINE_URL,
 ];
+
+// Cached the first time the converter asks for them, not on install: forge is
+// 286 KB and most visitors only read the blog.
+const LAZY_ASSETS = ['/js/vendor/forge.min.js'];
 
 const BLOG_CACHE_MAX_AGE = 7 * 24 * 60 * 60; // seconds in 1 week (7 days)
 
@@ -149,7 +152,7 @@ self.addEventListener('fetch', event => {
 
     if (request.mode === 'navigate') {
         event.respondWith(handleNavigationRequest(request));
-    } else if (STATIC_ASSETS.includes(url.pathname)) {
+    } else if (STATIC_ASSETS.includes(url.pathname) || LAZY_ASSETS.includes(url.pathname)) {
         event.respondWith(handleAssetRequest(request));
     } else if (url.pathname.startsWith('/blogs/')) {
         event.respondWith(cacheRequest(APP_CACHE, request, 50, BLOG_CACHE_MAX_AGE));

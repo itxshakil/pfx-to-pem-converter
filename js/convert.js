@@ -59,15 +59,6 @@
         }
     }
 
-    const binaryString = (buffer) => {
-        const bytes = new Uint8Array(buffer);
-        let out = '';
-        for (let i = 0; i < bytes.length; i += 0x8000) {
-            out += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
-        }
-        return out;
-    };
-
     // Same naming as the server path: <file>_cert_<YYYYMMDD_HHMMSS>.zip
     const zipName = (fileName) => {
         const base = fileName.replace(/\.[^.]*$/, '').replace(/[^a-zA-Z0-9\-_ ]/g, '').replace(/ /g, '_') || 'certificates';
@@ -82,7 +73,9 @@
         document.getElementById('pem-key').textContent = pem.key;
         document.getElementById('pem-cert').textContent = pem.cert;
         document.getElementById('pem-ca').textContent = pem.chain.join('');
-        result.querySelector('[data-pem-card="pem-ca"]').hidden = pem.chain.length === 0;
+        result.querySelectorAll('[data-pem-card]').forEach((card) => {
+            card.hidden = document.getElementById(card.dataset.pemCard).textContent === '';
+        });
         document.getElementById('download-zip').setAttribute('data-filename', zipName(fileName));
 
         result.hidden = false;
@@ -101,7 +94,7 @@
         submit.setAttribute('aria-busy', 'true');
         try {
             const [forge, buffer] = await Promise.all([loadForge(), file.arrayBuffer()]);
-            const pem = window.PfxConvert.convertPfx(forge, binaryString(buffer), password.value);
+            const pem = window.PfxConvert.convertPfx(forge, forge.util.createBuffer(buffer), password.value);
             // The key is on the page now; the password has done its job.
             password.value = '';
             showResult(pem, file.name);

@@ -134,11 +134,9 @@
     const zipBtn = document.getElementById('download-zip');
     if (zipBtn) {
         zipBtn.addEventListener('click', () => {
-            const files = [
-                { name: 'private.pem', text: textOf('pem-key') },
-                { name: 'cert.pem', text: textOf('pem-cert') },
-                { name: 'ca-chain.pem', text: textOf('pem-ca') },
-            ].filter((file) => file.text !== '');
+            const files = [...document.querySelectorAll('[data-download]')]
+                .map((btn) => ({ name: btn.getAttribute('data-filename'), text: textOf(btn.getAttribute('data-download')) }))
+                .filter((file) => file.text !== '');
             saveBlob(new Blob([makeZip(files)], { type: 'application/zip' }), zipBtn.getAttribute('data-filename'));
         });
     }
