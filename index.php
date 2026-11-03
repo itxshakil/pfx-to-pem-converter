@@ -170,7 +170,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 
         <?php
         // js/convert.js fills this in, and names the ZIP, after converting in the browser.
-        $result = ['key' => '', 'cert' => '', 'chain' => ''];
+        $result = ['key' => '', 'cert' => '', 'fullchain' => '', 'chain' => ''];
         $resultIntro = 'Converted in your browser. Your file and password never left this device.';
         require $_SERVER['DOCUMENT_ROOT'] . '/partials/result.php';
         ?>
@@ -388,6 +388,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
         </section>
     </main>
     <script src="/js/pfx-convert.js" defer></script>
+    <script src="/js/cert-details.js" defer></script>
     <script src="/js/result.js" defer></script>
     <script src="/js/convert.js" defer></script>
 <?php

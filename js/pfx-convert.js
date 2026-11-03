@@ -1,7 +1,7 @@
 /*
  * Converts a .pfx (PKCS#12) file to PEM entirely in the browser, so the file and
  * password never leave the device. Produces what process.php returns: a PKCS#8
- * private key, the leaf certificate and the CA chain.
+ * private key, the leaf certificate and the CA chain, plus a fullchain for servers.
  *
  * Plain script with no build step: the page gets window.PfxConvert, the Node
  * tests get module.exports.
@@ -31,6 +31,56 @@
 
     const certAsn1 = (forge, bag) => (bag.cert ? forge.pki.certificateToAsn1(bag.cert) : bag.asn1);
 
+    /**
+     * The TBSCertificate fields by name, read straight from the ASN.1 so EC
+     * certificates work too. The version field is optional, hence the offset.
+     */
+    const certificateFields = (forge, asn1) => {
+        const tbs = asn1.value[0].value;
+        const at = tbs[0].tagClass === forge.asn1.Class.CONTEXT_SPECIFIC && tbs[0].type === 0 ? 1 : 0;
+        return {
+            serial: tbs[at],
+            issuer: tbs[at + 2],
+            validity: tbs[at + 3],
+            subject: tbs[at + 4],
+            publicKeyInfo: tbs[at + 5],
+            extensions: tbs.slice(at + 6).find((el) => el.tagClass === forge.asn1.Class.CONTEXT_SPECIFIC && el.type === 3),
+        };
+    };
+
+    // Subject and issuer as DER bytes, so names compare exactly.
+    const names = (forge, asn1) => {
+        const fields = certificateFields(forge, asn1);
+        return {
+            subject: forge.asn1.toDer(fields.subject).getBytes(),
+            issuer: forge.asn1.toDer(fields.issuer).getBytes(),
+        };
+    };
+
+    const isSelfSigned = (forge, asn1) => {
+        const { subject, issuer } = names(forge, asn1);
+        return subject === issuer;
+    };
+
+    /**
+     * Walks issuer to subject from the leaf, so the chain comes out in the order
+     * servers expect no matter how the file stored it. Certificates that do not
+     * fit the walk go last, in file order.
+     */
+    const orderChain = (forge, leaf, certs) => {
+        const remaining = certs.map((asn1) => ({ asn1, ...names(forge, asn1) }));
+        const ordered = [];
+        let issuer = names(forge, leaf).issuer;
+        for (;;) {
+            const next = remaining.findIndex((cert) => cert.subject === issuer);
+            if (next === -1) break;
+            const [cert] = remaining.splice(next, 1);
+            ordered.push(cert.asn1);
+            issuer = cert.issuer;
+        }
+        return ordered.concat(remaining.map((cert) => cert.asn1));
+    };
+
     // The leaf is the certificate that belongs to the key. Position in the file
     // means nothing: some exporters put the CA first.
     const findLeaf = (keyBag, certBags) => {
@@ -52,7 +102,7 @@
      * @param {object} forge  node-forge
      * @param {string|object} der  the .pfx file as a binary string or a forge buffer
      * @param {string} password
-     * @returns {{key: string, cert: string, chain: string[]}}
+     * @returns {{key: string, cert: string, chain: string[], fullchain: string}}
      * @throws {Error} with code "password", "unsupported" or "no-key"
      */
     function convertPfx(forge, der, password) {
@@ -84,19 +134,26 @@
 
         const keyBag = keyBags[0];
         const leafIndex = findLeaf(keyBag, certBags);
+        const leaf = certAsn1(forge, certBags[leafIndex]);
+        const chain = orderChain(forge, leaf, certBags
+            .filter((_, i) => i !== leafIndex)
+            .map((bag) => certAsn1(forge, bag)));
+        const certPem = (asn1) => toPem(forge, 'CERTIFICATE', asn1);
+        const intermediates = chain.filter((cert) => !isSelfSigned(forge, cert));
 
         return {
             key: toPem(forge, 'PRIVATE KEY', keyAsn1(forge, keyBag)),
-            cert: toPem(forge, 'CERTIFICATE', certAsn1(forge, certBags[leafIndex])),
-            chain: certBags
-                .filter((_, i) => i !== leafIndex)
-                .map((bag) => toPem(forge, 'CERTIFICATE', certAsn1(forge, bag))),
+            cert: certPem(leaf),
+            chain: chain.map(certPem),
+            // What nginx's ssl_certificate wants: leaf plus intermediates. Browsers already trust the root.
+            // Empty when there are no intermediates, since it would only repeat cert.
+            fullchain: intermediates.length ? [leaf].concat(intermediates).map(certPem).join('') : '',
         };
     }
 
     if (typeof module === 'object' && module.exports) {
-        module.exports = { convertPfx };
+        module.exports = { convertPfx, certificateFields, isSelfSigned };
     } else {
-        root.PfxConvert = { convertPfx };
+        root.PfxConvert = { convertPfx, certificateFields, isSelfSigned };
     }
 })(typeof window !== 'undefined' ? window : globalThis);

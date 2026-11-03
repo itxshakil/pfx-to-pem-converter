@@ -40,6 +40,7 @@ jobs:
         run: |
           node --check js/app.js
           node --check js/pfx-convert.js
+          node --check js/cert-details.js
           node --check js/result.js
           node --check js/convert.js
           node --check sw.js

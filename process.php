@@ -113,6 +113,38 @@ function sanitizeFilename($filename) {
     return str_replace(' ', '_', $name);
 }
 
+/**
+ * Walks issuer to subject from the leaf so the chain is in the order servers
+ * expect, whatever order the file stored it in. Same rule as js/pfx-convert.js.
+ */
+function orderChain($leafPem, array $certPems) {
+    $remaining = array_map(static fn ($pem) => ['pem' => $pem, 'parsed' => openssl_x509_parse($pem)], array_values($certPems));
+    $ordered = [];
+    $leaf = openssl_x509_parse($leafPem);
+    $issuer = $leaf === false ? null : $leaf['issuer'];
+    while ($issuer !== null) {
+        $next = null;
+        foreach ($remaining as $i => $cert) {
+            if ($cert['parsed'] !== false && $cert['parsed']['subject'] === $issuer) {
+                $next = $i;
+                break;
+            }
+        }
+        if ($next === null) {
+            break;
+        }
+        $ordered[] = $remaining[$next]['pem'];
+        $issuer = $remaining[$next]['parsed']['issuer'];
+        array_splice($remaining, $next, 1);
+    }
+    return array_merge($ordered, array_column($remaining, 'pem'));
+}
+
+function isSelfSigned($pem) {
+    $parsed = openssl_x509_parse($pem);
+    return $parsed !== false && $parsed['subject'] === $parsed['issuer'];
+}
+
 // Validate CSRF token (timing-safe)
 if (empty($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'])) {
     redirectWithError('Invalid CSRF token. Please try again.');
@@ -181,12 +213,16 @@ if (!openssl_pkcs12_read($pfxContent, $pkcs12, $pfxPassword)) {
     }
 }
 
-// Assemble the CA chain (intermediate + root certificates) if the PFX bundled
-// any. Many servers need this for the certificate chain to validate.
-$caChainPem = '';
+// Intermediate and root certificates, leaf first, plus the fullchain (leaf and
+// intermediates) that nginx and most hosts want.
+$chain = [];
 if (!empty($pkcs12['extracerts']) && is_array($pkcs12['extracerts'])) {
-    $caChainPem = trim(implode("\n", array_map('trim', $pkcs12['extracerts']))) . "\n";
+    $chain = orderChain($pkcs12['cert'], array_map(static fn ($pem) => trim($pem) . "\n", $pkcs12['extracerts']));
 }
+$caChainPem = implode('', $chain);
+$intermediates = array_filter($chain, static fn ($pem) => !isSelfSigned($pem));
+// Without intermediates the fullchain is cert.pem again, so leave it out.
+$fullchainPem = $intermediates === [] ? '' : $pkcs12['cert'] . implode('', $intermediates);
 
 $zipFileName = sanitizeFilename($uploadedFile['name']) . '_cert_' . date('Ymd_His') . '.zip';
 
@@ -207,11 +243,19 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 ?>
 <main class="grow">
 <?php
-$result = ['key' => $pkcs12['pkey'], 'cert' => $pkcs12['cert'], 'chain' => $caChainPem, 'zipName' => $zipFileName];
+$result = [
+    'key'       => $pkcs12['pkey'],
+    'cert'      => $pkcs12['cert'],
+    'fullchain' => $fullchainPem,
+    'chain'     => $caChainPem,
+    'zipName'   => $zipFileName,
+];
 $resultIntro = 'Copy the contents below or download the files. Your file was converted on our server in a temporary folder that is deleted as soon as this page is sent.';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/result.php';
 ?>
 </main>
+<script src="/js/pfx-convert.js" defer></script>
+<script src="/js/cert-details.js" defer></script>
 <script src="/js/result.js" defer></script>
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php';

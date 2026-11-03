@@ -9,7 +9,7 @@
 
     const form = document.getElementById('convert-form');
     const result = document.getElementById('result');
-    if (!form || !result || !window.PfxConvert) return;
+    if (!form || !result || !window.PfxConvert || !window.PfxResult) return;
 
     const fileInput = document.getElementById('file');
     const password = document.getElementById('password');
@@ -18,23 +18,7 @@
     const errorText = document.getElementById('convert-error-text');
     const fallback = document.getElementById('server-fallback');
 
-    let forgeLoading = null;
-    const loadForge = () => {
-        if (window.forge) return Promise.resolve(window.forge);
-        if (!forgeLoading) {
-            forgeLoading = new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = '/js/vendor/forge.min.js';
-                script.onload = () => resolve(window.forge);
-                script.onerror = () => {
-                    forgeLoading = null;
-                    reject(new Error('forge failed to load'));
-                };
-                document.head.appendChild(script);
-            });
-        }
-        return forgeLoading;
-    };
+    const { loadForge, renderDetails } = window.PfxResult;
 
     // Start the download as soon as there is a file, so the click itself feels instant.
     fileInput.addEventListener('change', () => {
@@ -72,6 +56,7 @@
     function showResult(pem, fileName) {
         document.getElementById('pem-key').textContent = pem.key;
         document.getElementById('pem-cert').textContent = pem.cert;
+        document.getElementById('pem-full').textContent = pem.fullchain;
         document.getElementById('pem-ca').textContent = pem.chain.join('');
         result.querySelectorAll('[data-pem-card]').forEach((card) => {
             card.hidden = document.getElementById(card.dataset.pemCard).textContent === '';
@@ -81,6 +66,7 @@
         result.hidden = false;
         result.focus();
         result.scrollIntoView({ block: 'start' });
+        renderDetails();
     }
 
     form.addEventListener('submit', async (event) => {
