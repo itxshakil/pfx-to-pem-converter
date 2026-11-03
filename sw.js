@@ -1,11 +1,15 @@
 const DEBUG = false;
 
-const APP_CACHE = 'v-0.4.0';
+const APP_CACHE = 'v-0.5.0';
 const OFFLINE_URL = '/offline.html';
 const STATIC_ASSETS = [
     '/css/app.css',
     '/css/custom.css',
     '/js/app.js',
+    '/js/pfx-convert.js',
+    '/js/result.js',
+    '/js/convert.js',
+    '/js/vendor/forge.min.js',
     '/manifest.json',
     OFFLINE_URL,
 ];
