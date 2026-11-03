@@ -39,7 +39,17 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check js/app.js
+          node --check js/pfx-convert.js
+          node --check js/result.js
+          node --check js/convert.js
           node --check sw.js
+
+      # The shipped forge bundle must be the pinned npm release, not a hand-edited copy.
+      - name: Check vendored forge matches package-lock
+        run: cmp node_modules/node-forge/dist/forge.min.js js/vendor/forge.min.js
+
+      - name: Converter tests (against OpenSSL)
+        run: npm test
 
       - name: Build CSS
         run: npm run build
