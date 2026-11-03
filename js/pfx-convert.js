@@ -48,7 +48,19 @@
         };
     };
 
-    const nameKey = (forge, name) => forge.asn1.toDer(name).getBytes();
+    // Subject and issuer as DER bytes, so names compare exactly.
+    const names = (forge, asn1) => {
+        const fields = certificateFields(forge, asn1);
+        return {
+            subject: forge.asn1.toDer(fields.subject).getBytes(),
+            issuer: forge.asn1.toDer(fields.issuer).getBytes(),
+        };
+    };
+
+    const isSelfSigned = (forge, asn1) => {
+        const { subject, issuer } = names(forge, asn1);
+        return subject === issuer;
+    };
 
     /**
      * Walks issuer to subject from the leaf, so the chain comes out in the order
@@ -56,22 +68,17 @@
      * fit the walk go last, in file order.
      */
     const orderChain = (forge, leaf, certs) => {
-        const remaining = certs.slice();
+        const remaining = certs.map((asn1) => ({ asn1, ...names(forge, asn1) }));
         const ordered = [];
-        let current = leaf;
+        let issuer = names(forge, leaf).issuer;
         for (;;) {
-            const issuer = nameKey(forge, certificateFields(forge, current).issuer);
-            const next = remaining.findIndex((cert) => nameKey(forge, certificateFields(forge, cert).subject) === issuer);
+            const next = remaining.findIndex((cert) => cert.subject === issuer);
             if (next === -1) break;
-            current = remaining.splice(next, 1)[0];
-            ordered.push(current);
+            const [cert] = remaining.splice(next, 1);
+            ordered.push(cert.asn1);
+            issuer = cert.issuer;
         }
-        return ordered.concat(remaining);
-    };
-
-    const isSelfSigned = (forge, asn1) => {
-        const fields = certificateFields(forge, asn1);
-        return nameKey(forge, fields.subject) === nameKey(forge, fields.issuer);
+        return ordered.concat(remaining.map((cert) => cert.asn1));
     };
 
     // The leaf is the certificate that belongs to the key. Position in the file
@@ -132,19 +139,21 @@
             .filter((_, i) => i !== leafIndex)
             .map((bag) => certAsn1(forge, bag)));
         const certPem = (asn1) => toPem(forge, 'CERTIFICATE', asn1);
+        const intermediates = chain.filter((cert) => !isSelfSigned(forge, cert));
 
         return {
             key: toPem(forge, 'PRIVATE KEY', keyAsn1(forge, keyBag)),
             cert: certPem(leaf),
             chain: chain.map(certPem),
             // What nginx's ssl_certificate wants: leaf plus intermediates. Browsers already trust the root.
-            fullchain: [leaf].concat(chain.filter((cert) => !isSelfSigned(forge, cert))).map(certPem).join(''),
+            // Empty when there are no intermediates, since it would only repeat cert.
+            fullchain: intermediates.length ? [leaf].concat(intermediates).map(certPem).join('') : '',
         };
     }
 
     if (typeof module === 'object' && module.exports) {
-        module.exports = { convertPfx, certificateFields };
+        module.exports = { convertPfx, certificateFields, isSelfSigned };
     } else {
-        root.PfxConvert = { convertPfx, certificateFields };
+        root.PfxConvert = { convertPfx, certificateFields, isSelfSigned };
     }
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -80,6 +80,8 @@ for (const [name, pass] of [
         assert.match(result.key, /^-----BEGIN PRIVATE KEY-----\n/);
         assert.equal(result.cert, want.cert);
         assert.deepEqual(result.chain, want.chain);
+        // None of these files has an intermediate, so there is no separate fullchain.
+        assert.equal(result.fullchain, '');
     });
 }
 
