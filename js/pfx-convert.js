@@ -56,6 +56,13 @@
      * @throws {Error} with code "password", "unsupported" or "no-key"
      */
     function convertPfx(forge, der, password) {
+        // PKCS#12 feeds the password to its MAC as UTF-16, which forge gets right, but
+        // PBES2 (AES files) needs UTF-8 bytes and forge 1.4.2 passes the JS string as is.
+        // Without this, any non-ASCII password fails on modern files. ASCII is unchanged.
+        const pbe = forge.pki.pbe;
+        const getCipherForPBES2 = pbe.getCipherForPBES2;
+        pbe.getCipherForPBES2 = (oid, params, pass) => getCipherForPBES2(oid, params, forge.util.encodeUtf8(pass));
+
         let p12;
         try {
             p12 = forge.pkcs12.pkcs12FromAsn1(forge.asn1.fromDer(der), false, password);
@@ -64,6 +71,8 @@
                 throw fail('password', 'The password is not correct.');
             }
             throw fail('unsupported', 'This file could not be read in the browser.');
+        } finally {
+            pbe.getCipherForPBES2 = getCipherForPBES2;
         }
 
         const oids = forge.pki.oids;
