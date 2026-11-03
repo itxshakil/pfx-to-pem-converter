@@ -6,9 +6,11 @@
  *  - process.php renders it filled in after the server fallback.
  * js/result.js wires up the buttons and builds the ZIP from the text in the page.
  *
- * Expects: $result = ['key' => string, 'cert' => string, 'chain' => string, 'zipName' => string],
- * $resultHidden (bool), $resultIntro (trusted HTML) and $resultHeading ('h1' or 'h2').
+ * Expects $result = ['key' => string, 'cert' => string, 'chain' => string, 'zipName' => ?string]
+ * and $resultIntro. An empty key means the browser path: start hidden, below the page's own h1.
  */
+$isEmpty = $result['key'] === '';
+$heading = $isEmpty ? 'h2' : 'h1';
 $blocks = [
     ['id' => 'pem-key', 'file' => 'private.pem', 'icon' => 'i-key', 'text' => $result['key'],
         'note' => ['i-triangle-exclamation', 'Keep your private key secret. Store it somewhere safe and never share it.']],
@@ -17,18 +19,18 @@ $blocks = [
         'note' => ['i-lightbulb', 'Intermediate &amp; root certificates. Many servers need this for the chain to validate.']],
 ];
 ?>
-<section id="result" class="py-14" tabindex="-1" <?= $resultHidden ? 'hidden' : '' ?>>
+<section id="result" class="py-14" tabindex="-1" <?= $isEmpty ? 'hidden' : '' ?>>
     <div class="container mx-auto px-4 max-w-4xl">
         <div class="text-center mb-10">
             <span class="icon-tile w-14 h-14 mx-auto mb-4" style="background: var(--success-soft); color: var(--success);">
                 <svg class="icon text-2xl" aria-hidden="true"><use href="#i-circle-check"/></svg>
             </span>
-            <<?= $resultHeading ?> class="text-3xl font-bold text-body mb-2">Conversion complete</<?= $resultHeading ?>>
-            <p class="text-muted max-w-xl mx-auto"><?= $resultIntro ?></p>
+            <<?= $heading ?> class="text-3xl font-bold text-body mb-2">Conversion complete</<?= $heading ?>>
+            <p class="text-muted max-w-xl mx-auto"><?= htmlspecialchars($resultIntro, ENT_QUOTES) ?></p>
         </div>
 
         <?php foreach ($blocks as $block): ?>
-        <div class="surface-card p-6 mb-6" data-pem-card="<?= $block['id'] ?>" <?= $block['text'] === '' && $block['id'] === 'pem-ca' ? 'hidden' : '' ?>>
+        <div class="surface-card p-6 mb-6" data-pem-card="<?= $block['id'] ?>" <?= $block['text'] === '' ? 'hidden' : '' ?>>
             <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
                 <h3 class="text-lg font-semibold text-body flex items-center gap-2">
                     <svg class="icon text-brand" aria-hidden="true"><use href="#<?= $block['icon'] ?>"/></svg><?= $block['file'] ?>
@@ -55,7 +57,7 @@ $blocks = [
         <?php endforeach; ?>
 
         <div class="text-center">
-            <button type="button" id="download-zip" data-filename="<?= htmlspecialchars($result['zipName'], ENT_QUOTES) ?>"
+            <button type="button" id="download-zip" data-filename="<?= htmlspecialchars($result['zipName'] ?? 'certificates.zip', ENT_QUOTES) ?>"
                     class="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-gradient font-semibold">
                 <svg class="icon" aria-hidden="true"><use href="#i-file-zipper"/></svg>Download all as .zip
             </button>

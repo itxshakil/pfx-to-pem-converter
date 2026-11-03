@@ -208,8 +208,6 @@ require $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 <main class="grow">
 <?php
 $result = ['key' => $pkcs12['pkey'], 'cert' => $pkcs12['cert'], 'chain' => $caChainPem, 'zipName' => $zipFileName];
-$resultHidden = false;
-$resultHeading = 'h1';
 $resultIntro = 'Copy the contents below or download the files. Your file was converted on our server in a temporary folder that is deleted as soon as this page is sent.';
 require $_SERVER['DOCUMENT_ROOT'] . '/partials/result.php';
 ?>
