@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 await navigator.share({
                     title: '🔒 PFX to PEM Converter - Free Secure Tool',
-                    text: 'A handy tool that converts PFX files to PEM format securely. Your file is processed over an encrypted connection and deleted right after — never stored. Perfect for setting up SSL on Apache, Nginx, or any web server.',
+                    text: 'A handy tool that converts PFX files to PEM format right in your browser, so your file and password never leave your device. Perfect for setting up SSL on Apache, Nginx, or any web server.',
                     url: window.location.href
                 });
             } catch (error) {

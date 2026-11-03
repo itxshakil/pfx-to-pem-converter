@@ -1,9 +1,12 @@
 {
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.0",
+    "node-forge": "1.4.2",
     "tailwindcss": "^4.1.0"
   },
   "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "vendor:forge": "cp node_modules/node-forge/dist/forge.min.js js/vendor/forge.min.js",
     "build": "tailwindcss -m -i resources/css/app.css -o css/app.css",
     "watch": "tailwindcss -i resources/css/app.css -o css/app.css --watch"
   }

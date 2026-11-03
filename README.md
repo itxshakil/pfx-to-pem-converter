@@ -19,7 +19,7 @@
 
 ---
 
-A fast, privacy-first web tool for extracting SSL/TLS certificates from a `.pfx` / `.p12` (PKCS#12) bundle. Upload a PFX file, enter its password, and download the private key and certificate as PEM files in a single ZIP archive. Uploaded files are deleted the moment processing finishes — nothing is stored.
+A fast, privacy-first web tool for extracting SSL/TLS certificates from a `.pfx` / `.p12` (PKCS#12) bundle. Choose a PFX file, enter its password, and download the private key, certificate and CA chain as PEM files. The conversion runs in your browser, so the file and password never leave your device.
 
 ## Screenshots
 
@@ -31,23 +31,25 @@ A fast, privacy-first web tool for extracting SSL/TLS certificates from a `.pfx`
 
 - **PFX → PEM conversion** — extracts the private key and certificate from a PKCS#12 bundle into standard PEM format.
 - **Password-protected files** — decrypts encrypted `.pfx` / `.p12` files using the password you supply.
-- **One-click ZIP download** — packages the extracted key and certificate into a single archive.
-- **Privacy by design** — files are processed in a temporary directory outside the web root and deleted immediately after conversion. No file is ever persisted.
+- **One-click ZIP download**: packages the key, certificate and CA chain into a single archive, built in the browser.
+- **Converted in your browser**: the PKCS#12 file is decrypted by [node-forge](https://github.com/digitalbazaar/forge) on your device. Nothing is uploaded unless the browser cannot read a file and you choose the server fallback.
 - **Hardened by default** — per-request Content-Security-Policy with nonces, CSRF protection using timing-safe comparison, and strict file validation.
 - **Installable PWA** — works offline for the static shell and can be installed as an app.
 - **Built-in SSL guides** — a small library of articles on extracting certificates, certificate chains, SSL vs TLS, renewal, and Apache installation.
 
 ## How It Works
 
-1. **Upload** your `.pfx` / `.p12` file.
+1. **Choose** your `.pfx` / `.p12` file.
 2. **Enter the password** that protects the bundle.
-3. **Download** a ZIP containing your private key and certificate in PEM format.
+3. **Copy or download** the private key, certificate and CA chain in PEM format, one by one or as a ZIP.
 
-Conversion is handled server-side by PHP's `openssl_pkcs12_read`, and every uploaded file is removed via a shutdown handler as soon as the request completes.
+The conversion runs in the browser (`js/pfx-convert.js`). It covers modern AES and legacy RC2/3DES files, with RSA or EC keys. `process.php` stays as a fallback for browsers without JavaScript and for files the browser cannot read. It uses PHP's `openssl_pkcs12_read` (or `openssl -legacy`) in a temp directory outside the web root that is removed when the request ends.
+
+`npm test` checks the browser converter against OpenSSL, byte for byte, on freshly generated files.
 
 ## Tech Stack
 
-- **PHP 8.2+** — server-rendered, no framework. Uses the `openssl` and `zip` extensions.
+- **PHP 8.2+** — server-rendered, no framework. Uses the `openssl` extension.
 - **Tailwind CSS 3** — token-driven design system with light/dark support.
 - **Vanilla JavaScript** — progressive enhancement, no client framework.
 - **Service Worker + Web App Manifest** — offline support and installability.
@@ -58,7 +60,7 @@ There are **no Composer dependencies** — the only build tooling is npm + Tailw
 
 ### Prerequisites
 
-- [PHP](https://www.php.net/) **8.2 or later** with the `openssl` and `zip` extensions enabled
+- [PHP](https://www.php.net/) **8.2 or later** with the `openssl` extension enabled
 - [Node.js](https://nodejs.org/) **18+** and npm (only needed to rebuild the CSS)
 
 ### Run locally
@@ -83,12 +85,16 @@ Then open <http://127.0.0.1:8000> in your browser. Any PHP-capable web server (A
 ```
 .
 ├── index.php            # Converter UI (home page)
-├── process.php          # Handles upload, conversion, ZIP download
+├── process.php          # Server fallback: upload and conversion with OpenSSL
 ├── partials/            # Shared head, header, footer, icon sprite
 ├── blogs/               # SSL/TLS guide articles
 ├── resources/css/       # Tailwind source
 ├── css/                 # Compiled CSS output
 ├── js/app.js            # Front-end interactions
+├── js/pfx-convert.js    # In-browser PFX to PEM conversion
+├── js/convert.js        # Hooks the converter into the form
+├── js/result.js         # Copy, download and ZIP for the result
+├── js/vendor/           # Pinned node-forge build (npm run vendor:forge)
 ├── sw.js, manifest.json # PWA service worker + manifest
 └── images/              # Logo, icons, screenshots
 ```
@@ -97,7 +103,7 @@ Then open <http://127.0.0.1:8000> in your browser. Any PHP-capable web server (A
 
 Security is the whole point of this project, so it ships hardened:
 
-- **No file retention** — uploads land in a `0700` temp directory outside the web root and are deleted on shutdown.
+- **No upload by default**: conversion runs in the browser. The server fallback writes to a `0700` temp directory outside the web root that is deleted on shutdown.
 - **CSRF protection** — tokens validated with `hash_equals` (timing-safe).
 - **Content-Security-Policy** — strict, per-request nonce on inline scripts; no inline event handlers.
 - **Input validation** — only `.pfx` / `.p12` uploads are accepted.
